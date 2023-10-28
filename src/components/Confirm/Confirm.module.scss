@@ -1,0 +1,10 @@
+.container {
+    .body {
+        padding: 20px;
+        border: 1px solid var(--input-boder);
+    }
+    .bottom {
+        display: flex;
+        gap: 10px;
+    }
+}

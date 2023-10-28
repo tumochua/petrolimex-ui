@@ -1,0 +1,46 @@
+.editWapper {
+    .lable {
+        margin-left: 3px;
+    }
+    .inputHalf {
+        display: flex;
+    }
+    .inputWapper {
+        position: relative;
+
+        .baseInput {
+            width: 100%;
+            padding: 14px 20px;
+            outline: none;
+            border-radius: 2px;
+            border: 1px solid var(--input-boder);
+            box-shadow: var(--input-box-shadow);
+            &:focus {
+                border: 1px solid var(--input-boder-focus);
+            }
+        }
+        .iconPassword {
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .invalid {
+            border: 1px solid var(--danger);
+            &:focus {
+                border: 1px solid var(--danger);
+            }
+        }
+        .half {
+            width: 50%;
+        }
+        .trifurcate {
+            width: 30%;
+        }
+    }
+    .errors {
+        margin-left: 3px;
+        color: var(--danger);
+    }
+}

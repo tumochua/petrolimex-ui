@@ -1,0 +1,88 @@
+.baseBtn {
+    padding: 7px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--input-boder);
+}
+
+.danger {
+    border: none;
+    background-color: var(--danger);
+    color: var(--white);
+    &:hover {
+        background: var(--btn-hover-danger);
+    }
+}
+
+.disabled {
+    border: none;
+    pointer-events: none;
+    opacity: 0.5;
+    background: transparent;
+}
+
+.success {
+    border: none;
+    background: var(--btn-success);
+    color: var(--white);
+    box-shadow: var(--btn-box-shadow);
+    &:hover {
+        background: var(--btn-hover-success);
+        box-shadow: var(--btn-hover-box-shadow);
+    }
+}
+.small {
+    padding: 4px 10px;
+}
+.medium {
+    padding: 10px 22px;
+}
+.large {
+    padding: 14px 25px;
+}
+.fullWidth {
+    width: 100%;
+    padding: 14px;
+}
+.top {
+    margin-top: 14px;
+}
+
+.error {
+    border: 1px solid var(--btn-boder-error);
+    background-color: transparent;
+    &:hover {
+        border: 1px solid var(--btn-hover-danger);
+    }
+}
+
+.opacity {
+    opacity: 0.7;
+    pointer-events: none;
+}
+.hoverBorder {
+    border: 1px solid transparent;
+    &:hover {
+        border: 1px solid var(--input-boder);
+    }
+}
+.accent {
+    background: var(--color-accent-fg);
+    color: var(--white);
+}
+.border {
+    border: none;
+}
+.radius {
+    color: var(--black);
+    border-radius: 38%;
+    font-size: 1.5rem;
+    &:hover {
+        background: #ebebeb;
+        cursor: pointer;
+    }
+}
+.isBackground {
+    background: transparent;
+}

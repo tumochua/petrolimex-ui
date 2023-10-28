@@ -1,0 +1,108 @@
+{
+    "Headers": {
+        "studentPortal": "Cổng Sinh Viên"
+    },
+
+    "Home": {
+        "home": "Trang chủ",
+        "welcome": "Xin chào React"
+    },
+    "Profile": {
+        "fullName": "Họ và tên",
+        "dateBirth": "Ngày Tháng Năm Sinh (Năm Tháng Ngày)",
+        "address": "Địa Chỉ",
+        "codeSv": "Mã Sinh Viên",
+        "class": "Lớp",
+        "language": "Ngôn Ngữ",
+        "phoneNumber": "Số Điện Thoại",
+        "null": "Không Có",
+        "gender": "Giới Tính",
+        "nationality": "Quốc Tịch",
+        "role": "Quyền",
+        "age": "Tuổi",
+        "edit": "Sửa",
+        "male": "Nam",
+        "female": "Nữ",
+        "other": "Khác",
+        "InformationStudent": {
+            "notFound": "Chưa Có dữ liệu"
+        },
+        "FamilyInfo": {
+            "fullNameFather": "Họ Tên Bố",
+            "fullNameMommy": "Họ Tên Mẹ",
+            "genderFather": "Giới Tính Bố",
+            "genderMommy": "Giới Tính Mẹ",
+            "contactEmail": "Email Liên Hệ",
+            "contactPhone": "Số Điện Thoại Liên Hệ",
+            "addressFather": "Địa Chỉ Bố",
+            "addressMommy": "Địa Chỉ Mẹ"
+        },
+        "Headers": {
+            "TabButton": {
+                "personalInfo": "Thông Tin Cá Nhân",
+                "managePosts": "Quản Lý Bài Viết",
+                "familyInfo": "Thông Tin Gia Đình",
+                "proctorDetails": "Chi Tiết Giám Thị",
+                "hostelDetails": "Chi Tiết Ký Túc Xá",
+                "blog": "Viết Bài",
+                "approve": "Duyệt Bài",
+                "edit": "Sửa Thông Tin"
+            }
+        }
+    },
+    "Languages": {
+        "vi": "Tiếng Việt",
+        "en": "Tiếng Anh"
+    },
+    "Navbar": {
+        "home": "Trang chủ",
+        "notification": "Thông Báo",
+        "share": "Chia sẻ thông tin",
+        "post": "Bài Viết"
+    },
+    "Blog": {
+        "post": "Viết Bài",
+        "title": "Tiêu Đề Bài Viết",
+        "type": "Loại vd:(học tập, giải trí, bóng đá)",
+        "note": "Lưu ý: Thay vì upload ảnh . Mọi người sử dụng link để thay thế ảnh",
+        "featuredPosts": "Bài Viết Nổi Bật",
+        "time": "ngày trước",
+        "image": "Link Ảnh",
+        "learn": "Học Tập",
+        "entertainment": "Giải Trí",
+        "sporting": "Thể Thao",
+        "q&a": "Hỏi Đáp",
+        "feedback": "Góp Ý hoặc Đánh Giá",
+        "other": "Khác",
+        "choose": "--Chọn một sự lựa chọn--",
+        "edit": "Sửa",
+        "delete": "Xóa",
+        "editPosts": "Sửa Bài Viết",
+        "paging": {
+            "previous": "Trước",
+            "next": "Tiếp Theo"
+        },
+        "Approve": {
+            "title": "Tiêu Đề Bài Viết",
+            "status": "Trạng Thái",
+            "date": "Thời Gian",
+            "actions": "Hành Động",
+            "delete": "Xóa",
+            "verify": "Duyệt"
+        }
+    },
+    "Notification": {
+        "notification": "Thông Báo",
+        "createMes": "Vui Lòng Chờ Quản Trị Viên Duyệt Bài",
+        "resMes": "Bài Viết Của Bạn Đã Được Duyệt",
+        "seeAll": "Xem tất cả",
+        "mesRole": "Vừa Đăng Một Bài Viết",
+        "deletePost": "Bài Viết Của Bạn Bị Quản Trị Viên Xóa Vì Lý Do",
+        "likePost": " Đã Like Bài Viết Của Bạn"
+    },
+    "Confirm": {
+        "title": "Bạn có chắc muốn xóa bài viết này không ??",
+        "reason": "Lý do ...",
+        "error": "Cần nhập lý do xóa bài viết này"
+    }
+}

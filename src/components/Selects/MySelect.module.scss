@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+.baseSelects {
+    width: 80%;
+    padding: 10px;
+    height: calc(100% - 12px);
+    border: 1px solid var(--input-boder);
+    box-shadow: var(--input-box-shadow);
+    outline: none;
+    &:focus {
+        border: 1px solid var(--input-boder-focus);
+    }
+}
+
+.height {
+    height: 55px;
+}
+
+.width {
+    width: 100%;
+}
+
+.mtTop {
+    margin-top: 10px;
+}

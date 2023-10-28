@@ -1,0 +1,107 @@
+{
+    "Headers": {
+        "studentPortal": "Student Portal"
+    },
+    "Home": {
+        "home": "Home",
+        "welcome": "Welcome to React"
+    },
+    "Profile": {
+        "fullName": "fullName",
+        "dateBirth": "Date Of Birth",
+        "address": "Address",
+        "codeSv": "Code Student",
+        "class": "Class",
+        "language": "Language",
+        "phoneNumber": "Phone Number",
+        "null": "Null",
+        "gender": "Gender",
+        "nationality": "Nationality",
+        "role": "Role",
+        "age": "Age",
+        "edit": "Update student",
+        "male": "Male",
+        "female": "Female",
+        "other": "Other",
+        "InformationStudent": {
+            "notFound": "no data yet"
+        },
+        "FamilyInfo": {
+            "fullNameFather": "FullName Father",
+            "fullNameMommy": "FullName Mommy",
+            "genderFather": "Gender Father",
+            "genderMommy": "Gender Mommy",
+            "contactEmail": "Contact Email",
+            "contactPhone": "Contact Phone",
+            "addressFather": "Address Father",
+            "addressMommy": "Address Mommy"
+        },
+        "Headers": {
+            "TabButton": {
+                "personalInfo": "Personal Info",
+                "managePosts": "Manage Posts",
+                "familyInfo": "Family Info",
+                "proctorDetails": "Proctor Details",
+                "hostelDetails": "Hostel Details",
+                "blog": "Blog",
+                "approve": "Approve",
+                "edit": "Edit user information"
+            }
+        }
+    },
+    "Languages": {
+        "vi": "Vietnamese",
+        "en": "English"
+    },
+    "Navbar": {
+        "home": "Home",
+        "notification": "Notification",
+        "share": "Share Infor",
+        "post": "Post"
+    },
+    "Blog": {
+        "post": "Post",
+        "title": "Title Post",
+        "type": "Type vd:(learn, football)",
+        "note": "Note: Instead of uploading . People use links to replace photos",
+        "featuredPosts": "Featured Posts",
+        "time": "yesterday",
+        "image": "Link image",
+        "learn": "Study",
+        "entertainment": "Entertainment",
+        "sporting": "Sporting",
+        "q&a": "Q&A",
+        "other": "Other",
+        "feedback": "comments or reviews",
+        "choose": "--Choose an option--",
+        "edit": "Edit",
+        "delete": "Delete",
+        "editPosts": "Edit Posts",
+        "paging": {
+            "previous": "Previous",
+            "next": "Next"
+        },
+        "Approve": {
+            "title": "Title",
+            "status": "Status",
+            "date": "Date",
+            "actions": "Actions",
+            "delete": "Delete",
+            "verify": "Verify"
+        }
+    },
+    "Notification": {
+        "notification": "Notification",
+        "createMes": "Please wait for the Admin to review the post",
+        "resMes": "Your Post Has Been Approved",
+        "seeAll": "See all",
+        "mesRole": "Just Posted A Post",
+        "deletePost": "Your Posts Have Been Deleted By Administrators For Reasons",
+        "likePost": " Liked Your Post"
+    },
+    "Confirm": {
+        "title": "Are you sure you want to delete this post??",
+        "reason": "Reason",
+        "error": "Need to enter a reason to delete this post"
+    }
+}

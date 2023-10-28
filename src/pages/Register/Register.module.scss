@@ -1,0 +1,41 @@
+.loginWapper {
+    width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: var(--box-shadow);
+    border-top: 3px solid #4285f4;
+    border-radius: 3px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    .bodyWapper {
+        width: 100%;
+        .headeWapper {
+            text-align: center;
+            margin-top: 68px;
+            margin-bottom: 49px;
+        }
+        .formBody {
+            width: 80%;
+            margin: 0 auto;
+        }
+    }
+    .footerWapper {
+        text-align: center;
+        margin-top: 20px;
+    }
+}
+
+// .icon {
+//     background: #61d345;
+//     width: 20px;
+//     opacity: 0;
+//     height: 20px;
+//     border-radius: 10px;
+//     position: relative;
+//     transform: rotate(45deg);
+//     animation: go1310225428 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+//     animation-delay: 100ms;
+// }

@@ -1,0 +1,90 @@
+.toastWapper {
+    position: fixed;
+    right: 30px;
+    width: 320px;
+    max-width: 100%;
+    background: var(--white);
+    box-shadow: 0 1px 10px 0 rgb(0 0 0 / 10%), 0 2px 15px 0 rgb(0 0 0 / 5%);
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 2px;
+    border-left: 4px solid;
+    cursor: pointer;
+    overflow-y: hidden;
+    animation: slideInLeft linear 0.3s;
+    .toast {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        .borderLeft {
+            .iconSuccess {
+                color: var(--icon-success);
+            }
+            .iconWarning {
+                color: var(--icon-warning);
+            }
+            .iconError {
+                color: var(--icon-error);
+            }
+        }
+        .iconClose {
+            margin-left: 10px;
+        }
+    }
+
+    .progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        background: var(--black);
+        animation: progress 5s linear;
+    }
+
+    .progressSuccess {
+        background: var(--icon-success);
+    }
+    .progressWarning {
+        background: var(--icon-warning);
+    }
+    .progressError {
+        background: var(--icon-error);
+    }
+}
+.hideBorder {
+    border-left: none;
+}
+.borderSuccess {
+    border-left: 4px solid var(--icon-success);
+}
+
+.borderWarning {
+    border-left: 4px solid var(--icon-warning);
+}
+.borderError {
+    border-left: 4px solid var(--icon-error);
+}
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateY(calc(-100%));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes progress {
+    to {
+        width: 0%;
+    }
+}

@@ -1,0 +1,53 @@
+.inputCtn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .baseInput {
+        width: 100%;
+        padding: 14px 20px;
+        outline: none;
+        border-radius: 2px;
+        border: 1px solid var(--input-boder);
+        box-shadow: var(--input-box-shadow);
+        &:focus {
+            border: 1px solid var(--input-boder-focus);
+        }
+    }
+
+    .invalid {
+        border: 1px solid var(--danger);
+    }
+
+    .inputWapperIcon {
+        cursor: pointer;
+        position: absolute;
+        right: 20px;
+    }
+    .boder {
+        border: none;
+        &:focus {
+            border: none;
+        }
+    }
+    .opacity {
+        opacity: 0;
+        z-index: 10;
+        cursor: pointer;
+    }
+    .bottom {
+        margin-bottom: 12px;
+    }
+    .isBorderBottom {
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-bottom: 1px solid var(--input-boder);
+        &:focus {
+            border-top: none;
+            border-right: none;
+            border-left: none;
+        }
+    }
+}

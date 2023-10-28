@@ -1,0 +1,239 @@
+.home {
+    margin: 20px;
+}
+
+.containers {}
+
+.imageSlider {
+    width: 100%;
+}
+
+.introduceWarrper {
+    width: 1200px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-around;
+    margin: 100px auto;
+    margin-top: 100px;
+}
+
+.introduceLeft {
+    width: 45%;
+}
+
+.introduceLeftTitle {
+    font-size: 50px;
+    margin-bottom: 25px;
+}
+
+.introduceDetail {
+    font-size: 20px;
+    line-height: 35px;
+}
+
+.introduceAboutMe {
+    color: #0A54A8;
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.introduceAboutMe:hover {
+    color: #F88126;
+
+}
+
+
+.introduceRight {
+    width: 45%;
+    font-size: 20px;
+}
+
+.saleWarpper {}
+
+.saleNumber {
+    color: #F88126;
+    font-size: 70px;
+}
+
+.saleTitle {
+    color: #F88126;
+}
+
+.typesOfServices {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    // gap: 1px;
+
+    .leftImage {
+        // width: 58%;
+    }
+
+    .leftImageItem {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+
+    .rightImages {
+        // width: 42%;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .rightImageItem {
+        display: flex;
+        justify-content: space-between;
+        gap: 1px;
+        width: 100%;
+        padding: 1px;
+    }
+
+
+
+}
+
+.hoseWarpper {
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 50px auto;
+    font-size: 20px;
+}
+
+
+
+.hoseLeft {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.hoseLeftNumber {
+    font-size: 40px;
+}
+
+.hoseLeftPercent {
+    color: #0A54A8;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.hoseRight {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.hoseRightTitle {
+    font-weight: 800;
+}
+
+.hoseRightTitle:hover {
+    color: #F88126;
+    cursor: pointer;
+}
+
+.LearnMoreAboutUs {
+    background: linear-gradient(90deg, #fcba4e 0%, #f87926 100%);
+
+    .btnWarpper {
+        display: flex;
+        justify-content: space-between;
+
+        .customBtn {
+            padding: 20px 30px;
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 3px;
+            background-color: transparent;
+            color: #fff;
+            font-size: 20px;
+
+            &:hover {
+                background-color: #fff;
+                border-color: #fff;
+                color: #F88126;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.LearnMoreAboutUsWarpper {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 115px 0 90px;
+
+}
+
+.LearnMoreAboutUsTitle {
+    margin-bottom: 40px;
+    color: #fff;
+    font-size: 30px;
+}
+
+.newWarpper{
+    width: 1200px;
+    margin: 50px auto;
+    font-size: 20px;
+    
+}
+
+.newTitle{
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.newDetail{
+    display: flex;
+    justify-content: space-between;
+}
+
+.newDetailLeft{
+    width: 60%;
+}
+
+.postTitle{
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.newDetailRight{
+    width: 35%;
+    border-left: 1px solid #d9d9d9;
+    padding-left: 40px;
+}
+
+.postList{
+    padding-bottom: 20px;
+    border-bottom: 1px solid #d9d9d9;
+    
+    &:last-child{
+        border-bottom: 1px solid transparent;
+    }
+}
+
+.postListTitle{
+    font-size: 23px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+
+
+.sunriseWarpper{
+    display: flex;
+    width: 100%;
+    margin-top: 100px;
+}
+
+.sunriseItem{
+    width: 100%;
+}

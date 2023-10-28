@@ -1,0 +1,19 @@
+.Footer{
+    background-color: #044796;
+    margin-top: -7px;
+    font-size: 20px;
+}
+
+.FooterWapper{
+    display: flex;
+    justify-content: center;
+    color: rgba(255,255,255,0.65);
+    padding-top: 30px;
+    padding-bottom: 50px;
+    line-height: 40px;
+}
+
+.socialNetwork{
+    display: flex;
+    gap: 20px;
+}

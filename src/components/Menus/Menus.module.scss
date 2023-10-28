@@ -1,0 +1,42 @@
+.baseMenu {
+    background: var(--backGroundColer);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-top: 10px;
+    border-radius: 6px;
+    list-style: none;
+    width: 150px;
+    max-width: 100%;
+    padding: 2px;
+    z-index: 2;
+    .itemMenu {
+        padding: 10px 10px 10px 15px;
+        cursor: pointer;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        // padding-left: 10px;
+        &:hover {
+            background-color: #f0f0f0;
+            color: #292929;
+        }
+    }
+}
+.topRight {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    animation: topToBottom ease-in 0.2s;
+}
+
+@keyframes topToBottom {
+    from {
+        opacity: 0.5;
+        transform: scale(0);
+        // transform: scale(var(--growth-from));
+    }
+    to {
+        opacity: 1;
+        transform: scal(1);
+        // transform: scale(var(--growth-to));
+    }
+}
