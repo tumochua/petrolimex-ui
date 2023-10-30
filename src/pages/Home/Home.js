@@ -67,7 +67,7 @@ function Home() {
                         </p>
                         <div className={style.introduceAboutMe}>
                             <span >Về chúng tôi</span>
-                            <span><i class="fa fa-caret-right"></i></span>
+                            <span><i className="fa fa-caret-right"></i></span>
                         </div>
                     </div>
                 </div>
@@ -113,13 +113,13 @@ function Home() {
                     <span className={style.hoseLeftNumber}>33.00</span>
                     <span className={style.hoseLeftPercent}>
                         <span>0.3%</span>
-                        <i class="fa fa-caret-up up"></i>
+                        <i className="fa fa-caret-up up"></i>
                     </span>
                     <span>Cập nhật lần cuối lúc 22:11 - 27/10/2023</span>
                 </div>
                 <div className={style.hoseRight}>
                     <p className={style.hoseRightTitle}>Tin tức đầu tư </p>
-                    <span><i class="fa fa-caret-right"></i></span>
+                    <span><i className="fa fa-caret-right"></i></span>
                 </div>
             </div>
 

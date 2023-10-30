@@ -1,173 +1,55 @@
-import { useState, useEffect, Fragment } from 'react';
 
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+
 import style from './Register.module.scss';
 
-import WapperInput from '@/components/WapperInput';
-import Button from '@/components/Button';
-import ToastMessage from '@/components/ToastMessage';
-import Loading from '@/components/Loading';
 
 import config from '@/config';
-import { useShowHideIconPassword, useTypeInput, useValidateForm } from '@/use/Forms';
 
 import { handRegisterUser } from '@/services/apis';
+import Header from '@/layouts/Header';
 
 function Register() {
+
     const navigate = useNavigate();
 
-    const [user, setUser] = useState({
-        email: '',
-        password: '',
-        fullName: '',
+
+    const schema = yup.object().shape({
+        firstName: yup.string().required("Your First Name is Required!"),
+        lastName: yup.string().required("Your Lasr Name is Required!"),
+        email: yup.string().email().required(),
+        password: yup.string().min(4).max(20).required(),
+        confirmPassword: yup
+            .string()
+            .oneOf([yup.ref("password"), null], "Passwords Don't Match")
+            .required(),
     });
-    const [iconPassword, setIconPassword] = useState('fa-sharp fa-solid fa-eye-slash');
-    const [type, setType] = useState('password');
-    const [error, setError] = useState(null);
-    const [result, setResult] = useState(null);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    /// toast message
-    const [isToast, setIstoast] = useState(false);
-    const [iconToast, setIconToast] = useState('fa fa-check-circle');
-    const [typeToast, setTypeToast] = useState('default');
-    const [toastTitle, setToastTitle] = useState('default');
-    const [toastDescription, setToastDescription] = useState('default');
-
-    /// loading
-    const [isLoading, setIsLoading] = useState(false);
-
-    // const [redirect, setRedirect] = useState(false);
-
-    const newObjectUser = [
-        {
-            name: 'email',
-            value: user.email,
-            length: 5,
-            isRequire: true,
-        },
-        {
-            name: 'password',
-            value: user.password,
-            length: 5,
-            isRequire: true,
-        },
-        {
-            name: 'fullName',
-            value: user.fullName,
-            length: 7,
-            isRequire: true,
-        },
-    ];
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const data = useValidateForm(newObjectUser);
-        setError(data);
-    };
-
-    const handleSetState = ({ type, icon, title, description }) => {
-        setTypeToast(type);
-        setIconToast(icon);
-        setToastTitle(title);
-        setToastDescription(description);
-    };
-
-    useEffect(() => {
-        setResult(
-            error &&
-                error.every((item) => {
-                    return item.success ? true : false;
-                }),
-        );
-        if (result) {
-            async function fetchMyAPIPostUser() {
-                setIsLoading(true);
-                try {
-                    const response = await handRegisterUser(user);
-                    // console.log(response.data);
-                    if (response.data.statusCode === 2) {
-                        // handleSetState({
-                        //     type: 'success',
-                        //     icon: 'fa fa-check-circle',
-                        //     title: 'success',
-                        //     description: response.data.message,
-                        // });
-                        // console.log(redirect);
-                        navigate(config.routes.login);
-                    }
-                    if (response.data.statusCode === 4) {
-                        handleSetState({
-                            type: 'warning',
-                            icon: 'fa fa-check-circle',
-                            title: 'warning',
-                            description: response.data.message,
-                        });
-                    }
-                } catch (error) {
-                    console.log(error);
-                    handleSetState({
-                        type: 'error',
-                        icon: 'fa-solid fa-xmark',
-                        title: 'error',
-                        description: 'error from serve',
-                    });
-                } finally {
-                    setIsLoading(false);
-                    setIstoast(true);
-                }
+    const onSubmit = async (data) => {
+        if (data) {
+            const resultRegister = await handRegisterUser(data)
+            if (resultRegister.data.statusCode === 2) {
+                navigate(config.routes.login)
             }
-            fetchMyAPIPostUser();
-            // setRedirect(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [result, error]);
-
-    const handleOnchange = (data) => {
-        // bảo lưu users và thêm data input
-        setUser({ ...user, [data.name]: data.value });
-        if (error) {
-            error.map((item) => {
-                if (item.name === data.name) {
-                    item.errorMessage = '';
-                    item.statusError = false;
-                }
-                return null;
-            });
         }
     };
 
-    const handleChanIcon = () => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const classPassword = useShowHideIconPassword(iconPassword);
-        setIconPassword(classPassword);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const resultType = useTypeInput(type);
-        setType(resultType);
-    };
-
-    const handleCloseToast = () => {
-        setIstoast(false);
-    };
 
     return (
         <>
-            {isLoading ? <Loading /> : null}
-            {isToast ? (
-                <ToastMessage
-                    icon={iconToast}
-                    handleCloseToast={handleCloseToast}
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    hideBorder={false}
-                    typeToast={typeToast}
-                >
-                    <div>
-                        <p>{toastTitle}</p>
-                        <p>{toastDescription}</p>
-                    </div>
-                </ToastMessage>
-            ) : null}
+            <Header />
             <div className={style.loginWapper}>
                 <div className={style.bodyWapper}>
                     <div className={style.headeWapper}>
@@ -176,43 +58,46 @@ function Register() {
                             Register an account to enjoy all the services <br /> without any ads for free!
                         </p>
                     </div>
-                    <form className={style.formBody}>
-                        <WapperInput
-                            lable="FullName"
-                            value={user.fullName}
-                            name="fullName"
-                            type="text"
-                            handleOnchange={handleOnchange}
-                            placeholder="FullName..."
-                            errors={error && error[2].errorMessage}
-                            invalid={error && error[2].statusError}
-                        ></WapperInput>
-                        <WapperInput
-                            lable="Email Address"
-                            value={user.email}
-                            name="email"
-                            type="email"
-                            handleOnchange={handleOnchange}
-                            placeholder="Email Address.."
-                            errors={error && error[0].errorMessage}
-                            invalid={error && error[0].statusError}
-                        ></WapperInput>
-                        <WapperInput
-                            lable="Password"
-                            value={user.password}
-                            name="password"
-                            type={type}
-                            handleOnchange={handleOnchange}
-                            placeholder="Password"
-                            icon={iconPassword}
-                            handleChanIcon={handleChanIcon}
-                            errors={error && error[1].errorMessage}
-                            invalid={error && error[1].statusError}
-                        ></WapperInput>
-                        <Button success fullWidth top hanldeClick={handleRegister}>
-                            Register
-                        </Button>
-                    </form>
+                    <div className={style.formRegister}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className={style.formGroup}>
+                                <span>First Name</span><br />
+                                <input type="text" placeholder="First Name..." {...register("firstName")} className={style.inputRegister} />
+                                <p className={style.errorMessage}>{errors.firstName?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Last Name</span><br />
+                                <input type="text" placeholder="Last Name..." {...register("lastName")} className={style.inputRegister} />
+                                <p className={style.errorMessage}>{errors.lastName?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Email Name</span><br />
+                                <input type="text" placeholder="Email..." {...register("email")} className={style.inputRegister} />
+                                <p className={style.errorMessage}>{errors.email?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Password</span><br />
+                                <input
+                                    type="password"
+                                    placeholder="Password..."
+                                    {...register("password")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.password?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Confirm Password</span><br />
+                                <input
+                                    type="password"
+                                    placeholder="Confirm Password..."
+                                    {...register("confirmPassword")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.confirmPassword?.message}</p>
+                            </div>
+                            <input type="submit" value="Đăng Ký" className={style.submitBtn} />
+                        </form>
+                    </div>
                     <div className={style.footerWapper}>
                         <p>
                             Already Have An Account?{' '}

@@ -1,0 +1,76 @@
+.headerContainer {
+    height: 72px;
+    background-color: rgb(25 118 209);
+    color: rgb(255, 255, 255);
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+.headerLeft {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.headerMenus {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    align-items: center;
+
+}
+
+.headerMenuItem {
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+    }
+}
+
+.headerWarpper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.btnLogin {
+    background-color: #F7E05F;
+    color: #010416;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: flex-end;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.btnWarpper {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    align-items: center;
+}
+
+.firstName {
+    background-color: #bdbdbd;
+    padding: 12px;
+    border-radius: 50%;
+    color: #e3e3e3;
+}

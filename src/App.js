@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import { useContextStore, userAction } from '@/context';
 
 function App() {
     // eslint-disable-next-line no-unused-vars
-    const [state, dispatch] = useContextStore();
+    // const [state, dispatch] = useContextStore();
     // useEffect(() => {
     //     (async () => {
     //         try {

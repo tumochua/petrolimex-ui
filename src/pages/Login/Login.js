@@ -1,7 +1,12 @@
+
 /// reactjs
 import { useState, useEffect } from 'react';
 /// react-router-dom
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import Cookies from 'js-cookie';
 /// redux
@@ -9,169 +14,56 @@ import { connect } from 'react-redux';
 
 ///scss
 import style from './Login.module.scss';
-///component
-import WapperInput from '@/components/WapperInput';
-import Button from '@/components/Button';
-import Loading from '@/components/Loading';
-import ToastMessage from '@/components/ToastMessage';
+
 ///config router
 import config from '@/config';
-/// hook validate form
-import { useShowHideIconPassword, useTypeInput, useValidateForm } from '@/use/Forms';
-
-/// api
-// import { handleApiLogin } from '@/services/apis';
 
 /// redux
 import { createUser } from '@/store/actions/userActions';
+import Header from '@/layouts/Header';
 
 function Login({ createUser, userRedux }) {
-    const navigate = useNavigate();
-
-    const [user, setUser] = useState({
-        email: '',
-        password: '',
-    });
-
-    const [iconPassword, setIconPassword] = useState('fa-sharp fa-solid fa-eye-slash');
-    const [type, setType] = useState('password');
-    const [error, setError] = useState(null);
-    const [result, setResult] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [isToast, setIstoast] = useState(false);
-    const [iconToast, setIconToast] = useState('fa fa-check-circle');
-    const [typeToast, setTypeToast] = useState('default');
-    const [toastTitle, setToastTitle] = useState('default');
-    const [toastDescription, setToastDescription] = useState('default');
-
     const [stateAccessToken, setAccessToken] = useState(null);
     const [stateRefreshToken, setRefreshToken] = useState(null);
+    const navigate = useNavigate();
+    const schema = yup.object().shape({
+        email: yup.string().email().required(),
+        password: yup.string().min(4).max(20).required(),
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const data = useValidateForm(newObjectUser);
-        setError(data);
-    };
-    const newObjectUser = [
-        {
-            name: 'email',
-            value: user.email,
-            length: 5,
-            isRequire: true,
-        },
-        {
-            name: 'password',
-            value: user.password,
-            length: 5,
-            isRequire: true,
-        },
-    ];
+    });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const handleOnchange = (data) => {
-        // bảo lưu users và thêm data input
-        setUser({ ...user, [data.name]: data.value });
-        if (error) {
-            error.map((item) => {
-                if (item.name === data.name) {
-                    item.errorMessage = '';
-                    item.statusError = false;
+    const onSubmit = async (data) => {
+        if (data) {
+            try {
+                const response = await createUser(data);
+                console.log('response', response);
+                if (response && response.data.statusCode === 2) {
+                    setAccessToken(Cookies.get('accessToken'));
+                    setRefreshToken(Cookies.get('refreshToken'));
                 }
-                return null;
-            });
-        }
-    };
-    const handleChanIcon = () => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const classPassword = useShowHideIconPassword(iconPassword);
-        setIconPassword(classPassword);
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const resultType = useTypeInput(type);
-        setType(resultType);
-    };
-    const handleSetState = ({ type, icon, title, description }) => {
-        setTypeToast(type);
-        setIconToast(icon);
-        setToastTitle(title);
-        setToastDescription(description);
-    };
-    useEffect(() => {
-        setResult(
-            error &&
-                error.every((item) => {
-                    return item.success ? true : false;
-                }),
-        );
-        if (result) {
-            async function fetchHandleLogin() {
-                setIsLoading(true);
-                try {
-                    const response = await createUser(user);
-                    // console.log('response', response);
-
-                    if (response && response.data.data.statusCode === 2) {
-                        setAccessToken(Cookies.get('accessToken'));
-                        setRefreshToken(Cookies.get('refreshToken'));
-                        return;
-                    }
-                    if (response && response.data.data.statusCode === 4) {
-                        handleSetState({
-                            type: 'warning',
-                            icon: 'fa fa-check-circle',
-                            title: 'warning',
-                            description: response.data.data.message,
-                        });
-                        setIstoast(true);
-                        return;
-                    }
-                } catch (error) {
-                    console.log(error);
-                    handleSetState({
-                        type: 'error',
-                        icon: 'fa-solid fa-xmark',
-                        title: 'error',
-                        description: 'error from serve',
-                    });
-                    setIstoast(true);
-                } finally {
-                    setIsLoading(false);
-                    // setIstoast(false);
-                }
+            } catch (error) {
+                console.log(error);
             }
-            fetchHandleLogin();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [result, error]);
+    };
+
 
     useEffect(() => {
-        // if (stateAccessToken && stateRefreshToken) {
-        //     navigate(config.routes.profilePersonalInfo);
-        // }
+        if (stateAccessToken && stateRefreshToken) {
+            navigate(config.routes.profile);
+        }
     }, [navigate, stateAccessToken, stateRefreshToken]);
-
-    const handleCloseToast = () => {
-        setIstoast(false);
-    };
 
     return (
         <>
-            {isLoading ? <Loading /> : null}
-            {isToast ? (
-                <ToastMessage
-                    icon={iconToast}
-                    handleCloseToast={handleCloseToast}
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    hideBorder={false}
-                    typeToast={typeToast}
-                >
-                    <div>
-                        <p>{toastTitle}</p>
-                        <p>{toastDescription}</p>
-                    </div>
-                </ToastMessage>
-            ) : null}
+            <Header />
             <div className={style.loginWapper}>
                 <div className={style.bodyWapper}>
                     <div className={style.headeWapper}>
@@ -181,32 +73,22 @@ function Login({ createUser, userRedux }) {
                         </p>
                     </div>
 
-                    <form className={style.formBody}>
-                        <WapperInput
-                            lable="Email Address"
-                            value={user.email}
-                            name="email"
-                            type="email"
-                            handleOnchange={handleOnchange}
-                            placeholder="Email Address"
-                            errors={error && error[0].errorMessage}
-                            invalid={error && error[0].statusError}
-                        ></WapperInput>
-                        <WapperInput
-                            lable="Password"
-                            value={user.password}
-                            name="password"
-                            type={type}
-                            handleOnchange={handleOnchange}
-                            placeholder="Password"
-                            icon={iconPassword}
-                            handleChanIcon={handleChanIcon}
-                            errors={error && error[1].errorMessage}
-                            invalid={error && error[1].statusError}
-                        ></WapperInput>
-                        <Button success fullWidth top hanldeClick={handleLogin}>
-                            Login
-                        </Button>
+                    <form onSubmit={handleSubmit(onSubmit)} className={style.formLogin}>
+                        <div className={style.formGroup}>
+                            <input type="text" placeholder="Email..." {...register("email")} className={style.inputLogin} />
+                            <p className={style.errorMessage}>{errors.email?.message}</p>
+                        </div>
+                        <div className={style.formGroup}>
+                            <input
+                                type="password"
+                                placeholder="Password..."
+                                {...register("password")}
+                                className={style.inputLogin}
+                            />
+                            <p className={style.errorMessage}>{errors.password?.message}</p>
+                        </div>
+                        <input type="submit" value="Login" className={style.submitBtn} />
+
                     </form>
                     <div className={style.footerWapper}>
                         <p>

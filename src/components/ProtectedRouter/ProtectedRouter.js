@@ -1,43 +1,65 @@
 /* eslint-disable no-fallthrough */
-// import { useState, useEffect } from 'react';
-// import { Outlet, Navigate } from 'react-router-dom';
-// import config from '@/config';
-// import Cookies from 'js-cookie';
+import { useState, useEffect } from 'react';
+import { Outlet, Navigate, redirect } from 'react-router-dom';
+import config from '@/config';
+import Cookies from 'js-cookie';
+import { apiGetProfileUser } from '@/services/apis';
 // import { useContextStore } from '@/context';
 function ProtectedRouter({ route }) {
-    return (
-        <div>ProtectedRouter</div>
-    )
-    // const [state] = useContextStore();
-    // // const navigate = useNavigate();
-    // const [role, setRole] = useState(null);
-    // useEffect(() => {
-    //     if (state.userInfor && state.userInfor.data) {
-    //         setRole(state.userInfor.data.roleId);
-    //     }
-    // }, [state]);
-    // const accessToken = Cookies.get('accessToken');
-    // const refreshToken = Cookies.get('refreshToken');
-    // const isLogin = !accessToken || !refreshToken;
-    // console.log(route);
-    // console.log(role);
-    // if (route.isRole) {
-    //     // console.log('admin');
-    //     if (role) {
-    //         const isRole = role === 'R5' || role === 'R4' || role === 'R3';
-    //         return isRole ? <Outlet /> : <Navigate to={config.routes.profilePersonalInfo} />;
-    //     }
-    // }
-    // if (route.isRole || route.isTeacher) {
-    //     // console.log('teacher');
-    //     if (role) {
-    //         const isRole = role === 'R5' || role === 'R4' || role === 'R3' || role === 'R2';
-    //         // console.log(isRole);
-    //         return isRole ? <Outlet /> : <Navigate to={config.routes.profilePersonalInfo} />;
-    //     }
+    const accessToken = Cookies.get('accessToken');
+    const refreshToken = Cookies.get('refreshToken');
+    const isLogin = accessToken && refreshToken;
+    const [role, setRole] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const response = await apiGetProfileUser()
+            // console.log(response);
+            if (response.data.statusCode === 2 && response.data.data.roleId) {
+                setRole(response.data.data.roleId)
+            }
+        })()
+    }, [role])
+    if (role) {
+        const roleAdmin = role === 'R2' && route.role === 'admin';
+        const roleOfTheChief = role === 'R1' && route.role === 'OfTheChief';
+        const roleAdminAndOfTheChief = role === "R1" || role === "R2"
+        // console.log("roleAdminAndOfTheChief", roleAdminAndOfTheChief);
+        // console.log('role', role, route.role);
+        // console.log("roleAdmin", roleAdmin);
+        // console.log('roleOfTheChief', roleOfTheChief);
+        if (roleAdmin) {
+            console.log('r2');
+            return role === 'R2' ? <Outlet /> : <Navigate to={config.routes.home} />;
+        }
+        if (roleOfTheChief) {
+            console.log('r1');
+            return role === 'R1' ? <Outlet /> : <Navigate to={config.routes.home} />;
+        }
+        if (roleAdminAndOfTheChief) {
+            return <Outlet />
+        }
+
+        if (route.role === null) {
+            return <Outlet />
+        }
+
+        if (!roleAdmin && !roleOfTheChief) {
+            // console.log('test');
+            // return redirect("/")
+            return <Navigate to={config.routes.home} />;
+        } else {
+            return <Outlet />
+        }
+    }
+    return isLogin ? <Outlet /> : <Navigate to={config.routes.login} />;
+    // if (!isLogin) {
+    //     return <Outlet />;
+    // } else {
+    //     console.log("User is not logged in");
+    //     return <Navigate to={config.routes.login} />;
     // }
 
-    // return !isLogin ? <Outlet /> : <Navigate to={config.routes.login} />;
 }
 
 export default ProtectedRouter;

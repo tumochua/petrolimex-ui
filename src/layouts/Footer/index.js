@@ -11,8 +11,8 @@ function Footer() {
                     <p>Chịu trách nhiệm nội dung: Ông Nguyễn Quang Dũng - Phó Tổng Giám đốc</p>
                 </div>
                 <div className={style.socialNetwork}>
-                    <span><i class="fa fa-rss-square"></i></span>
-                    <span><i class="fa-brands fa-facebook"></i></span>
+                    <span><i className="fa fa-rss-square"></i></span>
+                    <span><i className="fa-brands fa-facebook"></i></span>
                 </div>
             </div>
         </div>

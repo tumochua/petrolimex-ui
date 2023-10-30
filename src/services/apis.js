@@ -12,19 +12,19 @@ const api = axios.create({
 
 export const getListUsers = () => {
     // console.log(Cookies.get('accessToken'));
-    // return api.get('/api-get-list-users');
+    return api.get('/api-get-all-users');
 };
 
 export const handRegisterUser = (user) => {
-    // return api.post('/api-register-user', user);
+    return api.post('/api-register-user', user);
 };
 
 export const handleApiLogin = (user) => {
-    // return api.post('api-login', user);
+    return api.post('/api-login', user);
 };
 
 export const apiGetProfileUser = () => {
-    // return api.get(`/api-get-profile-user-by-id`);
+    return api.get(`/api-get-user-by-id`);
 };
 
 export const handleApiEditUser = (userData) => {
@@ -156,13 +156,13 @@ export const apiGetAllStudentManage = (currentUser) => {
     });
 };
 
-export const apiManageGetUserById = (userId) => {
-    return api.get('/api-get-user-by-id', {
-        params: {
-            userId,
-        },
-    });
-};
+// export const apiManageGetUserById = (userId) => {
+//     return api.get('/api-get-user-by-id', {
+//         params: {
+//             userId,
+//         },
+//     });
+// };
 
 export const apiManageEditUser = (data) => {
     return api.put('/api-manage-eidt-user', data);
