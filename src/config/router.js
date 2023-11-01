@@ -2,7 +2,7 @@ const routes = {
     home: '/',
     login: '/login',
     register: '/register',
-    ofTheChief: '/of-the-chief',
+    ofTheChief: '/auth-shifts',
     employee: '/list-employee',
     timekeeping: '/timekeeping',
     salary: '/salary',

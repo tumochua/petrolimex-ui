@@ -27,6 +27,18 @@ export const apiGetProfileUser = () => {
     return api.get(`/api-get-user-by-id`);
 };
 
+export const apiCreateNotification = (notification) => {
+    return api.post('/api-crate-notification', notification)
+}
+
+export const apiCreateShift = (shift) => {
+    return api.post('/api-create-shifts', shift)
+}
+
+export const apiDeletUser = (userId) => {
+    return api.delete('/api-delete-user', { data: { userId } })
+}
+
 export const handleApiEditUser = (userData) => {
     // console.log('check userData', userData);
     // return api.put('/api-edit-user', userData);

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import { ToastContainer, toast } from "react-toastify";
 
 import style from './Register.module.scss';
 
@@ -13,6 +14,7 @@ import config from '@/config';
 
 import { handRegisterUser } from '@/services/apis';
 import Header from '@/layouts/Header';
+
 
 function Register() {
 
@@ -40,16 +42,56 @@ function Register() {
     const onSubmit = async (data) => {
         if (data) {
             const resultRegister = await handRegisterUser(data)
-            if (resultRegister.data.statusCode === 2) {
+            console.log(resultRegister);
+            if (resultRegister && resultRegister?.data?.statusCode === 4) {
+                toast.error(resultRegister?.data?.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            }
+            if (resultRegister && resultRegister?.data?.statusCode === 2) {
+                toast.success('Đăng Ký Thành Công', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 navigate(config.routes.login)
             }
         }
     };
 
 
+
+
+
     return (
         <>
             <Header />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            {/* Same as */}
+            <ToastContainer />
             <div className={style.loginWapper}>
                 <div className={style.bodyWapper}>
                     <div className={style.headeWapper}>

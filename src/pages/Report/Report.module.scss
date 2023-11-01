@@ -1,0 +1,39 @@
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.content {
+    margin-top: 100px;
+
+}
+
+.inputReport {
+    padding: 15px 10px;
+    width: 100%;
+}
+
+.errorReport {
+    color: red;
+    margin-top: 5px;
+}
+
+.inputSubmit {
+    padding: 10px 30px;
+    border: none;
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 3px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}

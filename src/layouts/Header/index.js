@@ -14,7 +14,7 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import Cookies from 'js-cookie';
 import config from '@/config';
 
@@ -38,7 +38,7 @@ const menus = [
     {
         id: 3,
         name: 'Lương',
-        role: false,
+        role: true,
         router: config.routes.salary
     },
     {
@@ -46,12 +46,19 @@ const menus = [
         name: 'Báo Cáo',
         role: false,
         router: config.routes.report
-    }
+    },
+    {
+        id: 5,
+        name: 'Phân Quyền Và Chia Ca',
+        role: true,
+        router: config.routes.ofTheChief
+    },
 ];
 
 function Header() {
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [bellNoti, setBellNoTi] = React.useState(null);
 
     const [settings] = React.useState([
         {
@@ -129,6 +136,14 @@ function Header() {
         }
     };
 
+    const handleOpenNotification = (event) => {
+        setBellNoTi(event.currentTarget);
+    }
+
+    const handleCloseBellMenu = () => {
+        setBellNoTi(null);
+    }
+
     // useEffect(() => {
     //     if (userInfor && userInfor.roleId) {
     //         if (userInfor.roleId === "R1" || userInfor.roleId === "R2") {
@@ -148,7 +163,6 @@ function Header() {
     const handleBackHome = () => {
         navigate(config.routes.home)
     }
-    // console.log('rerender');
 
     return (
         <div className={style.headerContainer}>
@@ -165,6 +179,9 @@ function Header() {
                         <ul className={style.headerMenus}>
                             {
                                 menus && menus.map((menu) => {
+                                    if (menu.role && userInfor && userInfor.roleId === 'R0') {
+                                        return null; // Nếu menu có role true và roleId là R0, không render menu này
+                                    }
                                     return (
                                         <li key={menu.id} className={style.headerMenuItem}>
                                             <Link to={menu.router} key={menu.id} className={style.headerMenuItem}>
@@ -183,11 +200,38 @@ function Header() {
                     isLogin ?
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip>
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, fontSize: '16px', }}>
-                                    <div className={style.firstName}>
-                                        {userInfor && userInfor.firstName}
+                                <div className={style.headerInfor}>
+                                    <div className={style.notificationCtn} onClick={handleOpenNotification}>
+                                        <i className="fa-solid fa-bell"></i>
+                                        <span className={style.bellSize}>1</span>
                                     </div>
-                                </IconButton>
+                                    <Menu
+                                        sx={{ mt: '45px', fontSize: '16px', }}
+                                        id="menu-appbar"
+                                        anchorEl={bellNoti}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                        open={Boolean(bellNoti)}
+                                        onClose={handleCloseBellMenu}
+                                        disableScrollLock={true}
+                                    >
+                                        <MenuItem onClick={handleCloseBellMenu} sx={{ fontSize: '16px', }}>My account</MenuItem>
+                                    </Menu>
+
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, fontSize: '16px', }}>
+                                        <div className={style.firstName}>
+                                            {userInfor && userInfor.firstName}
+                                        </div>
+                                    </IconButton>
+
+                                </div>
                             </Tooltip>
                             <Menu
                                 sx={{ mt: '45px', fontSize: '16px', }}
@@ -204,6 +248,7 @@ function Header() {
                                 }}
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
+                                disableScrollLock={true}
                             >
                                 {settings.map((setting) => (
                                     <MenuItem key={setting.id} onClick={() => handleCloseUserMenu(setting.value)}>
@@ -211,6 +256,7 @@ function Header() {
                                     </MenuItem>
                                 ))}
                             </Menu>
+
                         </Box>
                         : <button className={style.btnLogin} onClick={handleBtnLogin}>Login</button>
                 }

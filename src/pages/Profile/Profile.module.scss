@@ -1,0 +1,53 @@
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    background: var(--white);
+    box-shadow: var(--box-shadow);
+    border-radius: 3px;
+}
+
+.useProfile {
+    margin-top: 100px;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bodyProfile {
+    font-size: 18px;
+    line-height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.bodyProfileRight {
+    width: 60%;
+    text-align: center;
+}
+
+.headerRight {
+    display: flex;
+    gap: 20px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 60%;
+    margin: 10px auto;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

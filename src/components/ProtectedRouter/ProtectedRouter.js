@@ -21,20 +21,22 @@ function ProtectedRouter({ route }) {
         })()
     }, [role])
     if (role) {
-        const roleAdmin = role === 'R2' && route.role === 'admin';
-        const roleOfTheChief = role === 'R1' && route.role === 'OfTheChief';
+        const roleAdmin = role === 'R2';
+        const roleOfTheChief = role === 'R1';
         const roleAdminAndOfTheChief = role === "R1" || role === "R2"
         // console.log("roleAdminAndOfTheChief", roleAdminAndOfTheChief);
         // console.log('role', role, route.role);
         // console.log("roleAdmin", roleAdmin);
         // console.log('roleOfTheChief', roleOfTheChief);
+        // console.log(route);
         if (roleAdmin) {
-            console.log('r2');
             return role === 'R2' ? <Outlet /> : <Navigate to={config.routes.home} />;
         }
         if (roleOfTheChief) {
-            console.log('r1');
-            return role === 'R1' ? <Outlet /> : <Navigate to={config.routes.home} />;
+            if (route.role === 'admin') {
+                return <Navigate to={config.routes.home} />;
+            }
+            return <Outlet />;
         }
         if (roleAdminAndOfTheChief) {
             return <Outlet />

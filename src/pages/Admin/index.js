@@ -1,10 +1,11 @@
 import Header from "@/layouts/Header";
+import style from './Admin.module.scss'
 
 function Admin() {
     return (
         <>
             <Header />
-            <div>Admin</div>
+            <div className={style.container}>Admin</div>
         </>
     );
 }

@@ -42,3 +42,39 @@
     gap: 10px;
 
 }
+
+.headerEmployee {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.inputNoti {
+    padding: 15px 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.errorNoti {
+    color: red;
+}
+
+.inputSubmit {
+    padding: 10px 30px;
+    border: none;
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 3px;
+    font-size: 16px;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
