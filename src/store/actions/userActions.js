@@ -10,6 +10,7 @@ export const createUser = (user) => async (dispatch) => {
     // const navigate = useNavigate();
     try {
         const response = await handleApiLogin(user);
+        // console.log(response);
         const result = response.data;
         if (result.statusCode === 2) {
             await dispatch({ type: POST_USER, payload: result });

@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react';
 /// react-router-dom
 import { Link, useNavigate } from 'react-router-dom';
+// import { redirect } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import { ToastContainer, toast } from "react-toastify";
 
 import Cookies from 'js-cookie';
 /// redux
@@ -43,10 +46,22 @@ function Login({ createUser, userRedux }) {
         if (data) {
             try {
                 const response = await createUser(data);
-                console.log('response', response);
+                // console.log('response', response);
                 if (response && response.data.statusCode === 2) {
                     setAccessToken(Cookies.get('accessToken'));
                     setRefreshToken(Cookies.get('refreshToken'));
+                }
+                if (response && response.data.statusCode === 4) {
+                    toast.error('Tài Khoản Của Bạn Chưa Đăng Ký', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 }
             } catch (error) {
                 console.log(error);
@@ -57,13 +72,25 @@ function Login({ createUser, userRedux }) {
 
     useEffect(() => {
         if (stateAccessToken && stateRefreshToken) {
-            navigate(config.routes.profile);
+            window.location.href = config.routes.profile;
         }
     }, [navigate, stateAccessToken, stateRefreshToken]);
 
     return (
         <>
             <Header />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className={style.loginWapper}>
                 <div className={style.bodyWapper}>
                     <div className={style.headeWapper}>
@@ -90,14 +117,14 @@ function Login({ createUser, userRedux }) {
                         <input type="submit" value="Login" className={style.submitBtn} />
 
                     </form>
-                    <div className={style.footerWapper}>
+                    {/* <div className={style.footerWapper}>
                         <p>
                             Already Have An Account?{' '}
                             <Link to={config.routes.register} className={style.navLink}>
                                 Register
                             </Link>
                         </p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

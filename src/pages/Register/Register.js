@@ -22,14 +22,21 @@ function Register() {
 
 
     const schema = yup.object().shape({
-        firstName: yup.string().required("Your First Name is Required!"),
-        lastName: yup.string().required("Your Lasr Name is Required!"),
-        email: yup.string().email().required(),
-        password: yup.string().min(4).max(20).required(),
+        firstName: yup.string().required("Trường Tên Là Bắt Buộc!"),
+        lastName: yup.string().required("Trường Họ Là Bắt Buộc!"),
+        address: yup.string().required("Trường Địa Chỉ Là Bắt Buộc!"),
+        email: yup.string().email().required("Trường Email Là Bắt Buộc!"),
+        password: yup.string().min(4).max(20).required("Trường Mật Khẩu Là Bắt Buộc, Lớn hơn 4 và nhỏ hon 20"),
         confirmPassword: yup
             .string()
-            .oneOf([yup.ref("password"), null], "Passwords Don't Match")
-            .required(),
+            .required("Trường Xác Nhận Mật Khẩu Là Bắt Buộc"),
+        dob: yup.string().required("Năm Sinh Là Bắt Buộc!"),
+        mobile: yup.string().required('Trường Số Điện Thoại Là Bắt Buộc!'),
+        gender: yup.string().required("Giới Tính Là Bắt Buộc!"),
+        home_town: yup.string().required("Quê Hương Là Bắt Buộc!"),
+        cccd: yup.string().required('Trường Căn Cước Là Bắt Buộc!'),
+        nation: yup.string().required("Quốc Gia Là Bắt Buộc!"),
+        education: yup.string().required("Học Vấn Là Bắt Buộc!"),
     });
     const {
         register,
@@ -41,10 +48,11 @@ function Register() {
 
     const onSubmit = async (data) => {
         if (data) {
+            // console.log('data', data);
             const resultRegister = await handRegisterUser(data)
             console.log(resultRegister);
             if (resultRegister && resultRegister?.data?.statusCode === 4) {
-                toast.error(resultRegister?.data?.message, {
+                toast.error("Email Này Đã Đăng Ký, Vui Lòng Sử Dụng Email Khác Để Khác Ký Tài Khoản", {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -66,7 +74,7 @@ function Register() {
                     progress: undefined,
                     theme: "light",
                 });
-                navigate(config.routes.login)
+                navigate(config.routes.employee)
             }
         }
     };
@@ -103,39 +111,114 @@ function Register() {
                     <div className={style.formRegister}>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <div className={style.formGroup}>
-                                <span>First Name</span><br />
-                                <input type="text" placeholder="First Name..." {...register("firstName")} className={style.inputRegister} />
+                                <span>Tên</span><br />
+                                <input type="text" placeholder="Tên..." {...register("firstName")} className={style.inputRegister} />
                                 <p className={style.errorMessage}>{errors.firstName?.message}</p>
                             </div>
                             <div className={style.formGroup}>
-                                <span>Last Name</span><br />
-                                <input type="text" placeholder="Last Name..." {...register("lastName")} className={style.inputRegister} />
+                                <span>Họ</span><br />
+                                <input type="text" placeholder="Họ..." {...register("lastName")} className={style.inputRegister} />
                                 <p className={style.errorMessage}>{errors.lastName?.message}</p>
                             </div>
                             <div className={style.formGroup}>
-                                <span>Email Name</span><br />
+                                <span>Email</span><br />
                                 <input type="text" placeholder="Email..." {...register("email")} className={style.inputRegister} />
                                 <p className={style.errorMessage}>{errors.email?.message}</p>
                             </div>
                             <div className={style.formGroup}>
-                                <span>Password</span><br />
+                                <span>Địa Chỉ</span><br />
+                                <input type="text" placeholder="Địa chỉ..." {...register("address")} className={style.inputRegister} />
+                                <p className={style.errorMessage}>{errors.address?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Mật Khẩu</span><br />
                                 <input
                                     type="password"
-                                    placeholder="Password..."
+                                    placeholder="Mật Khẩu..."
                                     {...register("password")}
                                     className={style.inputRegister}
                                 />
-                                <p className={style.errorMessage}>{errors.password?.message}</p>
+                                <p className={style.errorMessage}>{errors.password?.message ? 'Trường Mật Khẩu Là Bắt Buộc, Lớn hơn 4 và nhỏ hon 20' : ''}</p>
                             </div>
                             <div className={style.formGroup}>
-                                <span>Confirm Password</span><br />
+                                <span>Xác Thực Mật Khẩu</span><br />
                                 <input
                                     type="password"
-                                    placeholder="Confirm Password..."
+                                    placeholder="Xác Thực Mật Khẩu..."
                                     {...register("confirmPassword")}
                                     className={style.inputRegister}
                                 />
                                 <p className={style.errorMessage}>{errors.confirmPassword?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Năm Sinh</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Năm Sinh..."
+                                    {...register("dob")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.dob?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Số Điện Thoại </span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Số Điện Thoại ..."
+                                    {...register("mobile")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.mobile?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Giới Tính</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Giới Tính..."
+                                    {...register("gender")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.gender?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Quê Hương</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Quê Hương..."
+                                    {...register("home_town")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.home_town?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Căn Cước</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Căn Cước..."
+                                    {...register("cccd")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.cccd?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Quốc Gia</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Quốc Gia..."
+                                    {...register("nation")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.nation?.message}</p>
+                            </div>
+                            <div className={style.formGroup}>
+                                <span>Học Vấn</span><br />
+                                <input
+                                    type="text"
+                                    placeholder="Học Vấn..."
+                                    {...register("education")}
+                                    className={style.inputRegister}
+                                />
+                                <p className={style.errorMessage}>{errors.education?.message}</p>
                             </div>
                             <input type="submit" value="Đăng Ký" className={style.submitBtn} />
                         </form>

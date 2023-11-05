@@ -15,12 +15,12 @@ import Employee from '@/pages/Employee';
 import Timekeeping from '@/pages/Timekeeping';
 import Salary from '@/pages/Salary';
 import Report from '@/pages/Report';
+import EditUsers from '@/pages/EditUsers'
 
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: DefaultLayout },
     { path: config.routes.login, component: Login, layout: null },
     { path: config.routes.register, component: Register, layout: null },
-
     { path: config.routes.notFound, component: NotFound, layout: null },
     // { path: '/leanRedux', component: LeanRedux },
 ];
@@ -77,6 +77,14 @@ const privateRoutes = [
         id: 7,
         path: config.routes.report,
         component: Report,
+        layout: null,
+        role: null,
+        isRole: true,
+    },
+    {
+        id: 8,
+        path: config.routes.editUser,
+        component: EditUsers,
         layout: null,
         role: null,
         isRole: true,

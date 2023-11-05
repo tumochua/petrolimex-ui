@@ -10,7 +10,8 @@ const routes = {
     /// profile
 
     profile: '/profile',
-    admin: "/admin",
+    admin: '/admin',
+    editUser: '/edit-user',
 
     /// not found
     notFound: '*',

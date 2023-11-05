@@ -1,0 +1,45 @@
+.container {
+    width: 1200px;
+    margin: 0 auto;
+
+}
+
+.title {
+    margin-top: 100px;
+    text-align: center;
+}
+
+.editForm {}
+
+.formLogin {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.inputLogin {
+    padding: 15px 10px 15px 10px;
+    width: 80%;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .14);
+    border-radius: 2px;
+    box-shadow: inset 0 2px 0 rgba(0, 0, 0, .02);
+
+    &:focus {
+        border: 1px solid rgba(0, 0, 0, .54);
+    }
+}
+
+.submitBtn {
+    width: 20%;
+    padding: 15px;
+    outline: none;
+    border: none;
+    color: #fff;
+    background-color: #ee4d2d;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .09);
+    cursor: pointer;
+}

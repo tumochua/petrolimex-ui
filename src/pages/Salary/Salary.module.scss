@@ -52,6 +52,10 @@
     gap: 20px;
 }
 
+.formGroup {
+    margin-bottom: 10px;
+}
+
 .inputSalary {
     padding: 15px 10px;
     width: 90%;
@@ -63,8 +67,9 @@
 
 .modalFooter {
     display: flex;
-    // justify-content: flex-end;
-    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .inputSubmit {
@@ -79,4 +84,9 @@
     &:hover {
         opacity: 0.9;
     }
+}
+
+.btnSalary {
+    display: flex;
+    gap: 20px;
 }

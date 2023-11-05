@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useEffect, memo } from 'react';
+import { useEffect } from 'react';
 
 import style from './Header.module.scss';
 
@@ -14,11 +14,11 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Cookies from 'js-cookie';
 import config from '@/config';
+import images from '@/assets/images';
 
-import { apiGetProfileUser } from '@/services/apis';
+import { apiGetProfileUser, apiGetAllNotification } from '@/services/apis';
 
 // const settings = ['Profile', 'Dashboard','Login', 'Register', 'Logout'];
 
@@ -71,16 +71,6 @@ function Header() {
             name: "Login",
             value: 'login'
         },
-        {
-            id: 3,
-            name: "Register",
-            value: 'register'
-        },
-        {
-            id: 4,
-            name: "Logout",
-            value: 'logout'
-        },
     ])
 
 
@@ -90,10 +80,20 @@ function Header() {
 
     const [userInfor, setUserInfor] = React.useState(null);
 
+    const [listNotification, setListNotification] = React.useState(null)
+
     // const [filterMenus, setFilterMenus] = React.useState(null)
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        (async () => {
+            const response = await apiGetAllNotification()
+            if (response?.data?.statusCode) {
+                setListNotification(response?.data?.message)
+            }
+        })()
+    }, [])
 
     useEffect(() => {
         setAccessToken(Cookies.get('accessToken'));
@@ -163,14 +163,15 @@ function Header() {
     const handleBackHome = () => {
         navigate(config.routes.home)
     }
+    // console.log(listNotification);
+    // src="https://files.petrolimex.com.vn/thumbnails/6783dc1271ff449e95b74a9520964169/0/0/0/bdaa10a39d094ee8b4a19ffa174c7783/0/105541/90e5839eb31d4b789d809b9216f0a147.jpg"
 
     return (
         <div className={style.headerContainer}>
-
-
             <div className={style.headerLeft}>
                 <Avatar alt="Remy Sharp"
-                    src="https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/344431182_181653767765102_733030341253524066_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=KYziJqvMgLEAX9Y3Swr&_nc_ht=scontent.fhan2-3.fna&oh=00_AfBHO1tqMOGm8VNymqypc2pzM3YH76U80bNqfAyWA3O9Wg&oe=6541C45A"
+                    src={images.logo}
+                    // src="https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/344431182_181653767765102_733030341253524066_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=KYziJqvMgLEAX9Y3Swr&_nc_ht=scontent.fhan2-3.fna&oh=00_AfBHO1tqMOGm8VNymqypc2pzM3YH76U80bNqfAyWA3O9Wg&oe=6541C45A"
                     sx={{ cursor: "pointer" }}
                     onClick={handleBackHome}
                 />
@@ -222,7 +223,17 @@ function Header() {
                                         onClose={handleCloseBellMenu}
                                         disableScrollLock={true}
                                     >
-                                        <MenuItem onClick={handleCloseBellMenu} sx={{ fontSize: '16px', }}>My account</MenuItem>
+                                        {
+                                            listNotification && listNotification.map((notification) => {
+                                                return (
+                                                    <MenuItem onClick={handleCloseBellMenu} sx={{ fontSize: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} key={notification?.id}>
+                                                        <h2>{notification?.title}</h2>
+                                                        <p>{notification?.content}</p>
+                                                    </MenuItem>
+
+                                                )
+                                            })
+                                        }
                                     </Menu>
 
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, fontSize: '16px', }}>

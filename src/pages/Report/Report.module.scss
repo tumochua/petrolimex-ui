@@ -37,3 +37,26 @@
     justify-content: flex-end;
     gap: 15px;
 }
+
+.listReport {
+    width: 1200px;
+    margin: 50px auto;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px auto;
+}
+
+td,
+th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

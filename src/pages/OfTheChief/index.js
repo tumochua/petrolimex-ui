@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getListUsers } from "@/services/apis";
 
 import style from '../Employee/Employee.module.scss'
+import styles from './OfTheChief.module.scss'
 import { Button } from "@mui/material";
 import Box from '@mui/material/Box';
 
@@ -18,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Modal from '@mui/material/Modal';
 
-import { apiGetProfileUser, apiCreateShift } from "@/services/apis";
+import { apiGetProfileUser, apiCreateShift, apiEditRole } from "@/services/apis";
 
 function OfTheChief() {
 
@@ -29,6 +30,8 @@ function OfTheChief() {
     const [open, setOpen] = useState(false);
     const [userData, setUserData] = useState(null)
     const [userId, setUserId] = useState(null)
+    const [roleValue, setRoleValue] = useState('');
+
 
     const schema = yup.object().shape({
         auth: null,
@@ -43,8 +46,30 @@ function OfTheChief() {
         resolver: yupResolver(schema),
     });
 
+    const handleSelectChange = (event) => {
+        setRoleValue(event.target.value);
+        // apiEditRole()
+    };
 
-
+    const handleAddRole = async () => {
+        if (roleValue && userId) {
+            // console.log(roleValue);
+            const response = await apiEditRole(roleValue, userId)
+            if (response.data.statusCode === 2) {
+                toast.success("Thêm Quyền Thành Công", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+                setOpen(false)
+            }
+        }
+    }
     const onSubmit = async (data) => {
         if (data) {
             reset()
@@ -74,7 +99,7 @@ function OfTheChief() {
             // console.log(result);
             setAllUser(result)
         })()
-    }, [])
+    }, [open])
     useEffect(() => {
         (async () => {
             const response = await apiGetProfileUser()
@@ -129,36 +154,44 @@ function OfTheChief() {
     }
     const handleClose = () => setOpen(false);
 
-
     const RenderModalType = () => {
         return (
             <div>
                 {
-                    openModalType && openModalType === 'auth' ? <form onSubmit={handleSubmit(onSubmit)}>
-                        <h2>Phân Quyền</h2>
-                        <div className={style.modalFooter}>
-                            <input type="submit" value="Thêm Quyền" className={style.inputSubmit} {...register("auth", { validate: false })} />
-                            <Button variant="outlined" color="error" size="small" sx={{ fontSize: '15px' }} onClick={handleClose}>Hủy</Button>
-                        </div>
-                    </form> : <div>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className={style.formGroup}>
-                                <h2>Chia Ca</h2>
-                                <span>Ca Làm</span><br />
-                                <input
-                                    className={style.inputNoti}
-                                    placeholder="Nhập ngày tháng năm"
-                                    {...register("shifts")}
-                                />
-                                <p className={style.errorNoti}>{errors.shifts?.message}</p>
+                    openModalType && openModalType === 'auth' ?
+                        <div>
+                            <h2>Phân Quyền</h2>
+                            <div className={styles.selectRole}>
+                                <select value={roleValue} onChange={handleSelectChange} >
+                                    <option value="R0">Nhân Viên</option>
+                                    <option value="R1">Của Hàng Trưởng</option>
+                                    <option value="R2">Quản lý</option>
+                                </select>
                             </div>
                             <div className={style.modalFooter}>
-                                <input type="submit" value="Chia Ca" className={style.inputSubmit} />
+                                <Button variant="contained" sx={{ fontSize: '15px' }} onClick={handleAddRole}>Thên Quyền</Button>
                                 <Button variant="outlined" color="error" size="small" sx={{ fontSize: '15px' }} onClick={handleClose}>Hủy</Button>
                             </div>
+                        </div>
+                        : <div>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className={style.formGroup}>
+                                    <h2>Chia Ca</h2>
+                                    <span>Ca Làm</span><br />
+                                    <input
+                                        className={style.inputNoti}
+                                        placeholder="Nhập ngày tháng năm"
+                                        {...register("shifts")}
+                                    />
+                                    <p className={style.errorNoti}>{errors.shifts?.message}</p>
+                                </div>
+                                <div className={style.modalFooter}>
+                                    <input type="submit" value="Chia Ca" className={style.inputSubmit} />
+                                    <Button variant="outlined" color="error" size="small" sx={{ fontSize: '15px' }} onClick={handleClose}>Hủy</Button>
+                                </div>
 
-                        </form>
-                    </div>
+                            </form>
+                        </div>
                 }
 
             </div>

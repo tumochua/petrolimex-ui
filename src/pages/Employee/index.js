@@ -50,12 +50,23 @@ function Employee() {
         if (data) {
             reset()
             const response = await apiCreateNotification(data)
-            console.log(response);
+            setOpen(false);
+            if (response.data.statusCode === 2) {
+                toast.success("Tạo thông báo thành công", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            }
+
 
         }
     };
-
-
     useEffect(() => {
         (async () => {
             const response = await getListUsers();
@@ -98,7 +109,7 @@ function Employee() {
     }
     const handleClose = () => setOpen(false);
 
-    const handleDeleUser = (userId, roleId) => {
+    const handleDeleUser = async (userId, roleId) => {
         if (userData && userData.id === userId) {
             toast.warn("Bạn Không Thể Xóa Chính Mình", {
                 position: "top-right",
@@ -122,9 +133,27 @@ function Employee() {
                 theme: "colored",
             })
         } else {
-            apiDeletUser(userId);
+            const response = await apiDeletUser(userId);
+            if (response?.data?.statusCode === 2) {
+                toast.success("Xóa Người Dùng Thành Công", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
+            }
         }
 
+    }
+
+    const handleEditUser = (userId) => {
+        // // { state: { id: userId }
+        // console.log(userId);
+        navigate(config.routes.editUser, { state: { id: userId } })
     }
 
 
@@ -199,20 +228,22 @@ function Employee() {
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Năm Sinh</th>
+                            <th>Địa Chỉ</th>
                             <th>Giới Tính</th>
                             <th>Quê Quán</th>
                             <th>Căn Cước</th>
-                            <th>Dân Tộc</th>
+                            <th>Quốc Gia</th>
                             <th>Học Vấn</th>
                             <th>Chức Vụ</th>
                             <th>Actions</th>
                         </tr>
                         {allUser && allUser.map(user => (
                             <tr key={user.id}>
-                                <td>Nhân Viên : {user.id}</td>
+                                <td>Mã Nhân Viên : {user.id}</td>
                                 <td>{`${user.lastName} ${user.firstName}`}</td>
                                 <td>{user.email || "Chưa có thông tin"}</td>
                                 <td>{user.dob || "Chưa có thông tin"}</td>
+                                <td>{user.address || "Chưa có thông tin"}</td>
                                 <td>{user.gender || "Chưa có thông tin"}</td>
                                 <td>{user.home_town || "Chưa có thông tin"}</td>
                                 <td>{user.cccd || "Chưa có thông tin"}</td>
@@ -220,7 +251,7 @@ function Employee() {
                                 <td>{user.education || "Chưa có thông tin"}</td>
                                 <td>{user?.roleData?.role_name || "Chưa có thông tin"}</td>
                                 <td className={style.btnAction}>
-                                    <Button variant="contained">Sửa</Button>
+                                    <Button variant="contained" onClick={() => handleEditUser(user.id)}>Sửa</Button>
                                     <Button variant="outlined" color="error" onClick={() => handleDeleUser(user.id, user.roleId)}>
                                         Xóa
                                     </Button>
