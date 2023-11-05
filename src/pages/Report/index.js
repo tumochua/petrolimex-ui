@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import * as XLSX from 'xlsx';
-import { format } from 'date-fns';
+import { isValid, parse, format } from 'date-fns';
 
 import Header from "@/layouts/Header";
 import style from './Report.module.scss'
@@ -33,7 +33,6 @@ function Report() {
         problem: null,
 
     });
-    console.log(listSales);
 
     const {
         register,
@@ -100,11 +99,35 @@ function Report() {
     }
 
     const exportToExcel = () => {
-        const worksheet = XLSX.utils.table_to_sheet(document.querySelector('table'));
+        const data = listSales.map((sale, index) => {
+            const formattedDate = formatDate(sale.day_for_sale);// Chuyển đổi ngày tháng thành đối tượng Date
+            return {
+                'STT': index + 1,
+                'Ngày Bán': formattedDate, // Định dạng lại ngày tháng
+                'Số Săng Bán Được': sale.sales_figures_day,
+                'Giá': sale.price,
+                'Thành Tiền': sale.sales_figures_day * sale.price + ' vnd'
+            };
+        });
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
         const workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, 'SalesData');
         XLSX.writeFile(workbook, 'sales_data.xlsx');
         saveExcelDb(JSON.stringify(workbook));
+    };
+    const formatDate = (dateString) => {
+        if (!dateString) {
+            return '';
+        }
+
+        const parsedDate = parse(dateString, 'dd/MM/yyyy', new Date());
+
+        if (isValid(parsedDate)) {
+            return format(parsedDate, 'dd/MM/yyyy');
+        } else {
+            return ''; // Trả về chuỗi trống nếu ngày tháng không hợp lệ
+        }
     };
 
     const saveExcelDb = async (excel) => {

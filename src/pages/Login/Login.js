@@ -52,7 +52,7 @@ function Login({ createUser, userRedux }) {
                     setRefreshToken(Cookies.get('refreshToken'));
                 }
                 if (response && response.data.statusCode === 4) {
-                    toast.error('Tài Khoản Của Bạn Chưa Đăng Ký', {
+                    toast.error('Thông Tin Tài Khoản Hoặc Mật Khẩu Không Chính Xác', {
                         position: "top-right",
                         autoClose: 5000,
                         hideProgressBar: false,
