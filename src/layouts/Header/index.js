@@ -1,11 +1,8 @@
 import * as React from 'react';
-
 import { useEffect } from 'react';
 
 import style from './Header.module.scss';
-
-import { useNavigate, Link } from 'react-router-dom';
-
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -20,108 +17,102 @@ import images from '@/assets/images';
 
 import { apiGetProfileUser, apiGetAllNotification } from '@/services/apis';
 
-// const settings = ['Profile', 'Dashboard','Login', 'Register', 'Logout'];
-
 const menus = [
     {
         id: 1,
         name: 'Danh Sách Nhân Viên',
-        role: true,
+        allowRoles: ['R1', 'R2'],
         router: config.routes.employee
     },
     {
         id: 2,
         name: "Chấm Công",
-        role: false,
+        allowRoles: ['R1', 'R2', 'R0'],
         router: config.routes.timekeeping
     },
     {
         id: 3,
         name: 'Lương',
-        role: true,
+        allowRoles: ['R1', 'R2', 'R0'],
         router: config.routes.salary
     },
     {
         id: 4,
         name: 'Báo Cáo',
-        role: false,
+        allowRoles: ['R1', 'R2', 'R0'],
         router: config.routes.report
     },
     {
         id: 5,
         name: 'Phân Quyền Và Chia Ca',
-        role: true,
-        router: config.routes.ofTheChief
+        allowRoles: ['R1', 'R2'],
+        router: config.routes.ofTheChief,
+        getName: (roleId) => {
+            if (roleId === 'R2') return 'Phân Quyền';
+            if (roleId === 'R1') return 'Chia Ca';
+            return 'Phân Quyền Và Chia Ca';
+        }
+    },
+    {
+        id: 6,
+        name: 'Danh sách ca làm',
+        allowRoles: ['R1'],
+        router: config.routes.listShift
+    },
+    {
+        id: 7,
+        name: 'Doanh số',
+        allowRoles: ['R2'],
+        router: config.routes.sales
     },
 ];
 
 function Header() {
-
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [bellNoti, setBellNoTi] = React.useState(null);
-
     const [settings] = React.useState([
-        {
-            id: 1,
-            name: "Profile",
-            value: 'profile'
-        },
-        {
-            id: 2,
-            name: "Login",
-            value: 'login'
-        },
-    ])
-
-
+        { id: 1, name: "Profile", value: 'profile' },
+        { id: 2, name: "Login", value: 'login' },
+    ]);
     const [isLogin, setIsLogin] = React.useState(true);
     const [refreshToken, setRefreshToken] = React.useState(null);
     const [accessToken, setAccessToken] = React.useState(null);
-
     const [userInfor, setUserInfor] = React.useState(null);
-
-    const [listNotification, setListNotification] = React.useState(null)
-
-    // const [filterMenus, setFilterMenus] = React.useState(null)
+    const [listNotification, setListNotification] = React.useState(null);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        (async () => {
-            const response = await apiGetAllNotification()
-            if (response?.data?.statusCode) {
-                setListNotification(response?.data?.message)
-            }
-        })()
-    }, [])
-
-    useEffect(() => {
-        setAccessToken(Cookies.get('accessToken'));
-        setRefreshToken(Cookies.get('refreshToken'));
-        if (refreshToken && accessToken) {
-            setIsLogin(true)
-        } else {
-            setIsLogin(false)
+        try {
+            (async () => {
+                const response = await apiGetAllNotification();
+                if (response?.data?.statusCode === 2) {
+                    setListNotification(response?.data?.message);
+                }
+            })();
+        } catch (error) {
+            console.log(error);
         }
-
-    }, [accessToken, refreshToken]);
-
+    }, []);
 
     useEffect(() => {
-        // const userData = JSON.parse(localStorage.getItem('user'));
-        // console.log(userData.firstName);
+        const access = Cookies.get('accessToken');
+        const refresh = Cookies.get('refreshToken');
+        setAccessToken(access);
+        setRefreshToken(refresh);
+        setIsLogin(!!(access && refresh));
+    }, []);
+
+    useEffect(() => {
         const fetchUserInfo = async () => {
-            const response = await apiGetProfileUser()
-            // console.log(response.data.data);
+            const response = await apiGetProfileUser();
             if (response.data.statusCode === 2 && response.data.data) {
-                const userInfor = response.data.data
-                setUserInfor(userInfor)
-                // const firstName = response.data.data.firstName
+                setUserInfor(response.data.data);
             }
-        }
-        fetchUserInfo()
-    }, [])
-
+        };
+        fetchUserInfo();
+    }, []);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -130,147 +121,133 @@ function Header() {
     const handleCloseUserMenu = (value) => {
         setAnchorElUser(null);
         const matchedSetting = settings.find(setting => setting.value === value);
-
         if (matchedSetting) {
-            navigate(`/${value}`)
+            navigate(`/${value}`);
         }
     };
 
     const handleOpenNotification = (event) => {
         setBellNoTi(event.currentTarget);
-    }
+    };
 
     const handleCloseBellMenu = () => {
         setBellNoTi(null);
-    }
-
-    // useEffect(() => {
-    //     if (userInfor && userInfor.roleId) {
-    //         if (userInfor.roleId === "R1" || userInfor.roleId === "R2") {
-    //             setFilterMenus(menus)
-    //         } else {
-    //             const result = menus.filter(item => item.role === false)
-    //             setFilterMenus(result)
-    //         }
-    //     }
-    // }, [userInfor])
-
+    };
 
     const handleBtnLogin = () => {
-        navigate(config.routes.login)
-    }
+        navigate(config.routes.login);
+    };
 
     const handleBackHome = () => {
-        navigate(config.routes.home)
-    }
-    // console.log(listNotification);
-    // src="https://files.petrolimex.com.vn/thumbnails/6783dc1271ff449e95b74a9520964169/0/0/0/bdaa10a39d094ee8b4a19ffa174c7783/0/105541/90e5839eb31d4b789d809b9216f0a147.jpg"
+        navigate(config.routes.home);
+    };
+
+    const roleId = JSON.parse(localStorage.getItem('roleId'));
 
     return (
         <div className={style.headerContainer}>
             <div className={style.headerLeft}>
-                <Avatar alt="Remy Sharp"
+                <Avatar
+                    alt="Logo"
                     src={images.logo}
-                    // src="https://scontent.fhan2-3.fna.fbcdn.net/v/t39.30808-6/344431182_181653767765102_733030341253524066_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=KYziJqvMgLEAX9Y3Swr&_nc_ht=scontent.fhan2-3.fna&oh=00_AfBHO1tqMOGm8VNymqypc2pzM3YH76U80bNqfAyWA3O9Wg&oe=6541C45A"
                     sx={{ cursor: "pointer" }}
                     onClick={handleBackHome}
                 />
-                {
-                    isLogin ?
-                        <ul className={style.headerMenus}>
-                            {
-                                menus && menus.map((menu) => {
-                                    if (menu.role && userInfor && userInfor.roleId === 'R0') {
-                                        return null; // Nếu menu có role true và roleId là R0, không render menu này
-                                    }
-                                    return (
-                                        <li key={menu.id} className={style.headerMenuItem}>
-                                            <Link to={menu.router} key={menu.id} className={style.headerMenuItem}>
-                                                <span>{menu.name}</span>
-                                            </Link>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
-                        : <React.Fragment></React.Fragment>
+                {isLogin &&
+                    <ul className={style.headerMenus}>
+                        {menus.map((menu) => {
+                            if (!menu.allowRoles.includes(roleId)) return null;
+                            const displayName = typeof menu.getName === 'function'
+                                ? menu.getName(roleId)
+                                : menu.name;
+
+                            const isActive = location.pathname === menu.router;
+
+
+                            return (
+                                <li key={menu.id}>
+                                    <Link
+                                        to={menu.router}
+                                        className={`${style.headerMenuItem} ${isActive ? style.active : ''}`}
+                                    >
+                                        <span>{displayName}</span>
+                                    </Link>
+                                </li>
+
+                            );
+                        })}
+                    </ul>
                 }
             </div>
             <div>
-                {
-                    isLogin ?
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip>
-                                <div className={style.headerInfor}>
-                                    <div className={style.notificationCtn} onClick={handleOpenNotification}>
-                                        <i className="fa-solid fa-bell"></i>
-                                        <span className={style.bellSize}>1</span>
+                {isLogin ? (
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip>
+                            <div className={style.headerInfor}>
+                                {/* <div className={style.notificationCtn} onClick={handleOpenNotification}>
+                                    <i className="fa-solid fa-bell"></i>
+                                    <span className={style.bellSize}>1</span>
+                                </div> */}
+                                <Menu
+                                    sx={{ mt: '45px', fontSize: '16px' }}
+                                    id="menu-appbar"
+                                    anchorEl={bellNoti}
+                                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                    keepMounted
+                                    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                    open={Boolean(bellNoti)}
+                                    onClose={handleCloseBellMenu}
+                                    disableScrollLock={true}
+                                >
+                                    {listNotification && listNotification.map((notification) => (
+                                        <MenuItem
+                                            onClick={handleCloseBellMenu}
+                                            sx={{
+                                                fontSize: '16px',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                justifyContent: 'flex-start'
+                                            }}
+                                            key={notification?.id}
+                                        >
+                                            <h2>{notification?.title}</h2>
+                                            <p>{notification?.content}</p>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, fontSize: '16px' }}>
+                                    <div className={style.firstName}>
+                                        {userInfor && userInfor.firstName}
                                     </div>
-                                    <Menu
-                                        sx={{ mt: '45px', fontSize: '16px', }}
-                                        id="menu-appbar"
-                                        anchorEl={bellNoti}
-                                        anchorOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        keepMounted
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                        open={Boolean(bellNoti)}
-                                        onClose={handleCloseBellMenu}
-                                        disableScrollLock={true}
-                                    >
-                                        {
-                                            listNotification && listNotification.map((notification) => {
-                                                return (
-                                                    <MenuItem onClick={handleCloseBellMenu} sx={{ fontSize: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} key={notification?.id}>
-                                                        <h2>{notification?.title}</h2>
-                                                        <p>{notification?.content}</p>
-                                                    </MenuItem>
-
-                                                )
-                                            })
-                                        }
-                                    </Menu>
-
-                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, fontSize: '16px', }}>
-                                        <div className={style.firstName}>
-                                            {userInfor && userInfor.firstName}
-                                        </div>
-                                    </IconButton>
-
-                                </div>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px', fontSize: '16px', }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                                disableScrollLock={true}
-                            >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting.id} onClick={() => handleCloseUserMenu(setting.value)}>
-                                        <Typography textAlign="center" sx={{ fontSize: '16px', }}>{setting.name}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-
-                        </Box>
-                        : <button className={style.btnLogin} onClick={handleBtnLogin}>Login</button>
-                }
+                                </IconButton>
+                            </div>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px', fontSize: '16px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            keepMounted
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                            disableScrollLock={true}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem
+                                    key={setting.id}
+                                    onClick={() => handleCloseUserMenu(setting.value)}
+                                >
+                                    <Typography textAlign="center" sx={{ fontSize: '16px' }}>
+                                        {setting.name}
+                                    </Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                ) : (
+                    <button className={style.btnLogin} onClick={handleBtnLogin}>Login</button>
+                )}
             </div>
         </div>
     );

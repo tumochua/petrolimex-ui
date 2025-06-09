@@ -51,3 +51,11 @@ th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+.iconSort {
+    cursor: pointer;
+
+    :hover {
+        opacity: 0.9;
+    }
+}

@@ -26,9 +26,12 @@ function Employee() {
     const navigate = useNavigate();
 
     const [allUser, setAllUser] = useState(null)
-    const [openModalType, setOpenModalType] = useState(null)
     const [open, setOpen] = useState(false);
     const [userData, setUserData] = useState(null)
+    const [render, setRender] = useState(false)
+    const [roleId, setRoleId] = useState(null)
+    // const [formattedDate, setFormattedDate] = useState(null);
+
 
     const schema = yup.object().shape({
         title: yup.string().required("Title is Required!"),
@@ -47,25 +50,25 @@ function Employee() {
 
 
     const onSubmit = async (data) => {
-        if (data) {
-            reset()
-            const response = await apiCreateNotification(data)
-            setOpen(false);
-            if (response.data.statusCode === 2) {
-                toast.success("Tạo thông báo thành công", {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                });
-            }
+        // if (data) {
+        //     reset()
+        //     const response = await apiCreateNotification(data)
+        //     setOpen(false);
+        //     if (response.data.statusCode === 2) {
+        //         toast.success("Tạo thông báo thành công", {
+        //             position: "top-right",
+        //             autoClose: 5000,
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             draggable: true,
+        //             progress: undefined,
+        //             theme: "colored",
+        //         });
+        //     }
 
 
-        }
+        // }
     };
     useEffect(() => {
         (async () => {
@@ -74,38 +77,61 @@ function Employee() {
             // console.log(result);
             setAllUser(result)
         })()
-    }, [])
+    }, [render])
     useEffect(() => {
         (async () => {
             const response = await apiGetProfileUser()
             const result = response?.data?.data
             if (result) {
                 setUserData(response?.data?.data);
-
             }
         })()
     }, [])
+
+    useEffect(() => {
+        if (allUser) {
+            // const result = allUser.filter((user) => {
+            //     return user.createdAt
+            // })
+            // console.log(result);
+        }
+    }, [allUser])
+
+    // useEffect(() => {
+    //     if()
+    //     const parseCreatedAt = (createdAt) => {
+    //       const date = new Date(createdAt);
+    //       const year = date.getFullYear();
+    //       const month = date.getMonth() + 1;
+    //       const day = date.getDate();
+    //       const formattedDate = `Ngày: ${day}, Tháng: ${month}, Năm: ${year}`;
+    //       setFormattedDate(formattedDate);
+    //     };
+
+    //     parseCreatedAt(createdAtFromAPI);
+    //   }, [formattedDate]);
 
     const handleCreateUser = () => {
         navigate(config.routes.register)
     }
 
     const handleOpen = (type) => {
-        if (userData && userData?.roleId !== "R2") {
-            toast.warn("Bạn Không Có Quyền Tạo Thông Báo", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-            });
-        } else {
-            setOpen(true);
-        }
-        setOpenModalType(type);
+        setOpen(true);
+        // if (userData && userData?.roleId !== "R2") {
+        //     toast.warn("Bạn Không Có Quyền Tạo Thông Báo", {
+        //         position: "top-right",
+        //         autoClose: 5000,
+        //         hideProgressBar: false,
+        //         closeOnClick: true,
+        //         pauseOnHover: true,
+        //         draggable: true,
+        //         progress: undefined,
+        //         theme: "colored",
+        //     });
+        // } else {
+        //     setOpen(true);
+        // }
+        // setOpenModalType(type);
     }
     const handleClose = () => setOpen(false);
 
@@ -135,6 +161,7 @@ function Employee() {
         } else {
             const response = await apiDeletUser(userId);
             if (response?.data?.statusCode === 2) {
+                setRender(true)
                 toast.success("Xóa Người Dùng Thành Công", {
                     position: "top-right",
                     autoClose: 5000,
@@ -150,12 +177,30 @@ function Employee() {
 
     }
 
-    const handleEditUser = (userId) => {
+    const handleEditUser = (userId, roleId) => {
         // // { state: { id: userId }
         // console.log(userId);
-        navigate(config.routes.editUser, { state: { id: userId } })
+        if (userData?.roleId === 'R1' && roleId === "R2") {
+            toast.warn("Bạn Không Thể Sửa Người Có Quyền lớn hơn mình", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        } else {
+            navigate(config.routes.editUser, { state: { id: userId } })
+        }
     }
+    useEffect(() => {
+        setRoleId(JSON.parse(localStorage.getItem('roleId')))
+    }, [])
 
+    console.log(roleId);
+    // console.log(JSON.parse(localStorage.getItem('roleId')));
 
 
     return (
@@ -176,8 +221,12 @@ function Employee() {
             <div className={style.container}>
 
                 <div className={style.headerEmployee}>
-                    <Button variant="contained" disableElevation size="large" sx={{ fontSize: '18px' }} onClick={handleCreateUser}>Tạo Nhân Viên</Button>
-                    <Button variant="contained" disableElevation size="large" sx={{ fontSize: '18px' }} onClick={() => handleOpen('notification')}>Tạo Thông Báo</Button>
+                    {
+                        roleId === "R2" ?
+                            <Button variant="contained" disableElevation size="large" sx={{ fontSize: '18px' }} onClick={handleCreateUser}>Tạo Nhân Viên</Button>
+                            : null
+                    }
+                    {/* <Button variant="contained" disableElevation size="large" sx={{ fontSize: '18px' }} onClick={() => handleOpen('notification')}>Tạo Thông Báo</Button> */}
                 </div>
                 <div>
                     <Modal
@@ -232,10 +281,15 @@ function Employee() {
                             <th>Giới Tính</th>
                             <th>Quê Quán</th>
                             <th>Căn Cước</th>
+                            <th>Ngày Vào Làm</th>
                             <th>Quốc Gia</th>
                             <th>Học Vấn</th>
                             <th>Chức Vụ</th>
-                            <th>Actions</th>
+                            {
+                                roleId === "R2" ?
+                                    <th>Actions</th>
+                                    : null
+                            }
                         </tr>
                         {allUser && allUser.map(user => (
                             <tr key={user.id}>
@@ -247,15 +301,20 @@ function Employee() {
                                 <td>{user.gender || "Chưa có thông tin"}</td>
                                 <td>{user.home_town || "Chưa có thông tin"}</td>
                                 <td>{user.cccd || "Chưa có thông tin"}</td>
+                                <td>{new Date(user.createdAt).toLocaleDateString('vi-VN') || "Chưa có thông tin"} </td>
                                 <td>{user.nation || "Chưa có thông tin"}</td>
                                 <td>{user.education || "Chưa có thông tin"}</td>
                                 <td>{user?.roleData?.role_name || "Chưa có thông tin"}</td>
-                                <td className={style.btnAction}>
-                                    <Button variant="contained" onClick={() => handleEditUser(user.id)}>Sửa</Button>
-                                    <Button variant="outlined" color="error" onClick={() => handleDeleUser(user.id, user.roleId)}>
-                                        Xóa
-                                    </Button>
-                                </td>
+                                {
+                                    roleId === "R2" ?
+                                        <td className={style.btnAction}>
+                                            <Button variant="contained" onClick={() => handleEditUser(user.id, user.roleId)}>Sửa</Button>
+                                            <Button variant="outlined" color="error" onClick={() => handleDeleUser(user.id, user.roleId)}>
+                                                Xóa
+                                            </Button>
+                                        </td>
+                                        : null
+                                }
                             </tr>
                         ))}
                     </tbody>

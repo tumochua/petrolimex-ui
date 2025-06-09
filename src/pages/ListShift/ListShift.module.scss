@@ -1,0 +1,100 @@
+.shift-container {
+    padding: 30px;
+    max-width: 1100px;
+    margin: 100px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.table th {
+    cursor: pointer;
+    position: relative;
+}
+
+.table th:hover {
+    background-color: #ddd;
+}
+
+.table th i {
+    margin-left: 5px;
+    /* Khoảng cách giữa tên cột và icon */
+    font-size: 12px;
+    color: #333;
+}
+
+.table th::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+}
+
+.table th.asc::after {
+    border-top: 5px solid #333;
+}
+
+.table th.desc::after {
+    border-bottom: 5px solid #333;
+}
+
+
+.shift-user-info {
+    font-size: 14px;
+    color: #777;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .shift-container {
+        padding: 15px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px;
+    }
+}
+
+.sortIcon {
+    font-size: 13px;
+    color: #aaa;
+    margin-left: 4px;
+    cursor: pointer;
+
+    span {
+        margin-left: 2px;
+    }
+}
+
+.active {
+    color: #000;
+    font-weight: bold;
+}

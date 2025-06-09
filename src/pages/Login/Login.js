@@ -30,8 +30,12 @@ function Login({ createUser, userRedux }) {
     const [stateRefreshToken, setRefreshToken] = useState(null);
     const navigate = useNavigate();
     const schema = yup.object().shape({
-        email: yup.string().email().required(),
-        password: yup.string().min(4).max(20).required(),
+        email: yup.string().email().required("Email là bắt buộc"),
+        password: yup
+            .string()
+            .min(4, "Mật khẩu phải có ít nhất 4 ký tự")
+            .max(20, "Mật khẩu không được vượt quá 20 ký tự")
+            .required("Vui lòng nhập mật khẩu"),
 
     });
     const {
@@ -94,9 +98,9 @@ function Login({ createUser, userRedux }) {
             <div className={style.loginWapper}>
                 <div className={style.bodyWapper}>
                     <div className={style.headeWapper}>
-                        <h1>Login An Account</h1>
+                        <h1>Đăng Nhập Tài Khoản</h1>
                         <p>
-                            Login an account to enjoy all the services <br /> without any ads for free!
+                            Hãy đăng nhập để sử dụng đầy đủ dịch vụ
                         </p>
                     </div>
 
@@ -114,7 +118,7 @@ function Login({ createUser, userRedux }) {
                             />
                             <p className={style.errorMessage}>{errors.password?.message}</p>
                         </div>
-                        <input type="submit" value="Login" className={style.submitBtn} />
+                        <input type="submit" value="Đăng Nhập" className={style.submitBtn} />
 
                     </form>
                     {/* <div className={style.footerWapper}>

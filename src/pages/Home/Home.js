@@ -2,7 +2,7 @@ import * as React from 'react';
 import style from './Home.module.scss'
 
 
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const ablutMe = ["Danh Sách Nhân Viên", "Chấm Công", "Lương", "Báo cáo tài chính"]
@@ -10,33 +10,34 @@ const ablutMe = ["Danh Sách Nhân Viên", "Chấm Công", "Lương", "Báo cáo
 
 function Home() {
 
+
     const [newData] = useState([
         {
-            id:1,
-            title:"Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
-            orther:"Thông cáo báo chí | 23/10/2023",
+            id: 1,
+            title: "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
+            orther: "Thông cáo báo chí | 23/10/2023",
         },
         {
-            id:2,
-            title:"Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
-            orther:"Thông cáo báo chí | 23/10/2023",
+            id: 2,
+            title: "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
+            orther: "Thông cáo báo chí | 23/10/2023",
         },
         {
-            id:3,
-            title:"Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
-            orther:"Thông cáo báo chí | 23/10/2023",
+            id: 3,
+            title: "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
+            orther: "Thông cáo báo chí | 23/10/2023",
         },
         {
-            id:4,
-            title:"Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
-            orther:"Thông cáo báo chí | 23/10/2023",
+            id: 4,
+            title: "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
+            orther: "Thông cáo báo chí | 23/10/2023",
         },
         {
-            id:5,
-            title:"Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
-            orther:"Thông cáo báo chí | 23/10/2023",
+            id: 5,
+            title: "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 23.10.2023",
+            orther: "Thông cáo báo chí | 23/10/2023",
         },
-       
+
     ]);
 
 
@@ -48,11 +49,26 @@ function Home() {
         })();
     }, []);
 
-   
+
+    // Lấy ngày hiện tại
+    // const today = new Date();
+
+    // // Lấy ngày
+    // const day = today.getDate();
+
+    // // Lấy tháng (chú ý tháng bắt đầu từ 0)
+    // const month = today.getMonth() + 1;
+
+    // // Lấy năm
+    // const year = today.getFullYear();
+    // const time = `Ngày: ${day}, Tháng: ${month}, Năm: ${year}`
+    // // Hiển thị kết quả
+    // console.log(time);
+
 
     return (
         <div>
-          
+
             <div className={style.containers}>
                 <img src='https://files.petrolimex.com.vn/files/6783dc1271ff449e95b74a9520964169/image=jpeg/9562fc49e05349faae8bc483f044eb85/Desktop%2016.11.jpg' className={style.imageSlider} alt='alt' />
             </div>
@@ -97,12 +113,12 @@ function Home() {
             <div>
                 <div className={style.typesOfServices}>
                     <div className={style.leftImage}>
-                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-1.jpg' className={style.leftImageItem} alt='alt'/>
+                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-1.jpg' className={style.leftImageItem} alt='alt' />
                     </div>
                     <div className={style.rightImages}>
-                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-2.jpg' className={style.rightImageItem} alt='alt'/>
-                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-3.jpg' className={style.rightImageItem} alt='alt'/>
-                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-4.jpg' className={style.rightImageItem} alt='alt'/>
+                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-2.jpg' className={style.rightImageItem} alt='alt' />
+                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-3.jpg' className={style.rightImageItem} alt='alt' />
+                        <img src='https://portals.petrolimex.com.vn/_themes/sunrise/img/industry-cta-4.jpg' className={style.rightImageItem} alt='alt' />
                     </div>
                 </div>
             </div>
@@ -137,17 +153,17 @@ function Home() {
                 <div className={style.newTitle}>Tin Tức</div>
                 <div className={style.newDetail}>
                     <div className={style.newDetailLeft}>
-                        <img src='https://files.petrolimex.com.vn/thumbnailwebps/6783dc1271ff449e95b74a9520964169/0/0/0/9276dbf8a4cf4e8094822d6240579b2c/0/082809/b65daa0d78ce46f78c81425fbb630a1d.webp?transparent=.' alt='alt'/>
+                        <img src='https://files.petrolimex.com.vn/thumbnailwebps/6783dc1271ff449e95b74a9520964169/0/0/0/9276dbf8a4cf4e8094822d6240579b2c/0/082809/b65daa0d78ce46f78c81425fbb630a1d.webp?transparent=.' alt='alt' />
                         <div className={style.postTitle}>Một số thông tin điều hành Xăng dầu ngày 23.10.2023</div>
                         <p>www.petrolimex.com.vn xin trân trọng đăng tải toàn văn thông tin kỳ điều hành giá xăng dầu ngày 23.10.2023.</p>
                     </div>
                     <div className={style.newDetailRight}>
-                    {newData.map(item => (
-                        <div key={item.id} className={style.postList}>
-                            <div className={style.postListTitle}>{item.title}</div>
-                            <p>{item.orther}</p>
-                        </div>
-                    ))}
+                        {newData.map(item => (
+                            <div key={item.id} className={style.postList}>
+                                <div className={style.postListTitle}>{item.title}</div>
+                                <p>{item.orther}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

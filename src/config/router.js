@@ -3,6 +3,8 @@ const routes = {
     login: '/login',
     register: '/register',
     ofTheChief: '/auth-shifts',
+    listShift: '/list-shifts',
+    sales: '/list-sales',
     employee: '/list-employee',
     timekeeping: '/timekeeping',
     salary: '/salary',

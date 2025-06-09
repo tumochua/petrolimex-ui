@@ -31,11 +31,14 @@ function OfTheChief() {
     const [userData, setUserData] = useState(null)
     const [userId, setUserId] = useState(null)
     const [roleValue, setRoleValue] = useState('');
+    const [roleIdLocal, setRoleIdLocal] = useState(null)
 
 
     const schema = yup.object().shape({
         auth: null,
-        shifts: yup.string().required("shifts is Required!"),
+        shifts: yup.string().required("Vui lòng chọn ca làm!"),
+        date: yup.string().required("Vui lòng chọn ngày làm!")
+
     });
     const {
         register,
@@ -72,8 +75,10 @@ function OfTheChief() {
     }
     const onSubmit = async (data) => {
         if (data) {
+            // console.log(data);
+
             reset()
-            // setOpen(false)
+            setOpen(false)
             const response = await apiCreateShift({ data: data, userId: userId })
             if (response && response?.data?.statusCode === 2) {
                 toast.success("Tạo Ca Làm Thành Công", {
@@ -152,6 +157,13 @@ function OfTheChief() {
 
         }
     }
+
+    useEffect(() => {
+        setRoleIdLocal(JSON.parse(localStorage.getItem('roleId')))
+    }, [roleIdLocal])
+
+    // console.log(roleIdLocal);
+
     const handleClose = () => setOpen(false);
 
     const RenderModalType = () => {
@@ -177,14 +189,25 @@ function OfTheChief() {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className={style.formGroup}>
                                     <h2>Chia Ca</h2>
+
                                     <span>Ca Làm</span><br />
-                                    <input
-                                        className={style.inputNoti}
-                                        placeholder="Nhập ngày tháng năm"
-                                        {...register("shifts")}
-                                    />
+                                    <select className={style.inputNoti} {...register("shifts")}>
+                                        <option value="">-- Chọn ca làm --</option>
+                                        <option value="Sáng">Sáng (Từ 6:00 sáng đến 14:00)</option>
+                                        <option value="Chiều">Chiều (Từ 14:00 đến 22:00)</option>
+                                        <option value="Tối">Tối (Từ 22:00 đến 6:00 sáng hôm sau)</option>
+                                    </select>
                                     <p className={style.errorNoti}>{errors.shifts?.message}</p>
+
+                                    <span>Ngày Làm</span><br />
+                                    <input
+                                        type="date"
+                                        className={style.inputNoti}
+                                        {...register("date", { required: "Ngày làm là bắt buộc" })}
+                                    />
+                                    <p className={style.errorNoti}>{errors.date?.message}</p>
                                 </div>
+
                                 <div className={style.modalFooter}>
                                     <input type="submit" value="Chia Ca" className={style.inputSubmit} />
                                     <Button variant="outlined" color="error" size="small" sx={{ fontSize: '15px' }} onClick={handleClose}>Hủy</Button>
@@ -197,6 +220,8 @@ function OfTheChief() {
             </div>
         )
     }
+    const roleId = JSON.parse(localStorage.getItem('roleId'));
+    console.log(roleId);
 
 
     return (
@@ -238,7 +263,10 @@ function OfTheChief() {
                         </Box>
                     </Modal>
                 </div>
-                <h1 className={style.title}>Phân Quyền Và Chia Ca</h1>
+                <h1 className={style.title}>
+                    {roleId === 'R1' ? 'Chia Ca' : roleId === 'R2' ? 'Phân Quyền' : 'Không xác định'}
+                </h1>
+
                 <table className={style.customers}>
                     <tbody>
                         <tr>
@@ -250,22 +278,29 @@ function OfTheChief() {
                             <th>Actions</th>
                         </tr>
                         {allUser && allUser.map(user => (
-                            <tr key={user.id}>
-                                <td>Nhân Viên : {user.id}</td>
-                                <td>{`${user.lastName} ${user.firstName}`}</td>
-                                <td>{user.email || "Chưa có thông tin"}</td>
-                                <td>{user.dob || "Chưa có thông tin"}</td>
-                                <td>{user?.roleData?.role_name || "Chưa có thông tin"}</td>
-                                <td className={style.btnAction}>
-                                    <Button variant="contained" onClick={() => handleOpen('auth', user.id, user.roleId)} sx={{ fontSize: '12px' }} >
-                                        Phân Quyền
-                                    </Button>
-                                    <Button variant="contained" onClick={() => handleOpen('shifts', user.id, user.roleId)} sx={{ fontSize: '12px' }} >
-                                        Chia Ca
-                                    </Button>
-                                </td>
-                            </tr>
+                            user.roleId === "R0" && (
+                                <tr key={user.id}>
+                                    <td>Nhân Viên : {user.id}</td>
+                                    <td>{`${user.lastName} ${user.firstName}`}</td>
+                                    <td>{user.email || "Chưa có thông tin"}</td>
+                                    <td>{user.dob || "Chưa có thông tin"}</td>
+                                    <td>{user?.roleData?.role_name || "Chưa có thông tin"}</td>
+                                    <td className={style.btnAction}>
+                                        {roleIdLocal === 'R2' && (
+                                            <Button variant="contained" onClick={() => handleOpen('auth', user.id, user.roleId)} sx={{ fontSize: '12px' }}>
+                                                Phân Quyền
+                                            </Button>
+                                        )}
+                                        {roleIdLocal === 'R1' && (
+                                            <Button variant="contained" onClick={() => handleOpen('shifts', user.id, user.roleId)} sx={{ fontSize: '12px' }}>
+                                                Chia Ca
+                                            </Button>
+                                        )}
+                                    </td>
+                                </tr>
+                            )
                         ))}
+
                     </tbody>
                 </table>
             </div>

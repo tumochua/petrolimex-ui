@@ -15,6 +15,7 @@ function Timekeeping() {
     const [toastTitleEnd, seTtoastTitleEnd] = useState(null)
     const [roleId, setRoleId] = useState(null)
     const [listTimekeeing, setListTimeKeeing] = useState(null)
+    const [roleIdLocal, setRoleIdLocal] = useState(null)
 
 
     useEffect(() => {
@@ -34,6 +35,8 @@ function Timekeeping() {
                 }
             }
         })()
+        // console.log('roleId, listTimekeeing');
+
     }, [roleId])
 
     const getTimeCurrentStart = () => {
@@ -149,6 +152,16 @@ function Timekeeping() {
 
         }
     }
+    useEffect(() => {
+        setRoleIdLocal(JSON.parse(localStorage.getItem('roleId')))
+    }, [roleIdLocal])
+
+    console.log(roleIdLocal);
+    console.log(roleIdLocal === "R0");
+
+    // console.log(JSON.parse(localStorage.getItem('roleId')));
+
+
     return (
         <>
             <Header />
@@ -169,39 +182,49 @@ function Timekeeping() {
                 <div>Giờ Ra : {JSON.stringify(endTime)}</div> */}
             </div>
             <div className={style.container}>
-                <Button variant="contained" disableElevation sx={{ fontSize: "18px" }} onClick={handleBtnTimeStart}>Giờ Vào</Button>
-                <Button variant="contained" color="success" sx={{ fontSize: "18px" }} onClick={handleBtnTimeEnd}>Giờ Ra</Button>
+
+                {roleIdLocal && roleIdLocal === "R0" && (
+                    <div className={style.btn}>
+                        <Button variant="contained" disableElevation sx={{ fontSize: "18px" }} onClick={handleBtnTimeStart}>
+                            Giờ Vào
+                        </Button>
+                        <Button variant="contained" color="success" sx={{ fontSize: "18px" }} onClick={handleBtnTimeEnd}>
+                            Giờ Ra
+                        </Button>
+                    </div>
+                )}
+
+
+                <table className={style.customers}>
+                    {listTimekeeing &&
+                        <tbody>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Nhân Viên</th>
+                                {/* <th>Full Name</th> */}
+                                <th>Time</th>
+                                {/* <th>Type</th> */}
+                            </tr>
+                            {
+                                listTimekeeing && listTimekeeing.map((timekeeing, index) => {
+                                    return (
+                                        <tr key={timekeeing.id}>
+                                            <td>{index + 1}</td>
+                                            <td>{timekeeing.userId}</td>
+                                            {/* <td>{userData?.lastName}  {userData?.firstName}</td> */}
+                                            <td>{timekeeing.time}</td>
+                                            {/* <td>{timekeeing.type === 'start' ? 'Giờ Vào' : 'Giờ Ra'}</td> */}
+                                        </tr>
+                                    )
+                                })
+
+                            }
+
+                        </tbody>
+
+                    }
+                </table>
             </div>
-
-            <table className={style.customers}>
-                {listTimekeeing &&
-                    <tbody>
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã Nhân Viên</th>
-                            {/* <th>Full Name</th> */}
-                            <th>Time</th>
-                            {/* <th>Type</th> */}
-                        </tr>
-                        {
-                            listTimekeeing && listTimekeeing.map((timekeeing, index) => {
-                                return (
-                                    <tr key={timekeeing.id}>
-                                        <td>{index + 1}</td>
-                                        <td>{timekeeing.userId}</td>
-                                        {/* <td>{userData?.lastName}  {userData?.firstName}</td> */}
-                                        <td>{timekeeing.time}</td>
-                                        {/* <td>{timekeeing.type === 'start' ? 'Giờ Vào' : 'Giờ Ra'}</td> */}
-                                    </tr>
-                                )
-                            })
-
-                        }
-
-                    </tbody>
-
-                }
-            </table>
         </>
     );
 }

@@ -16,6 +16,8 @@ import Timekeeping from '@/pages/Timekeeping';
 import Salary from '@/pages/Salary';
 import Report from '@/pages/Report';
 import EditUsers from '@/pages/EditUsers'
+import ListShift from '@/pages/ListShift';
+import Sales from '@/pages/Sales';
 
 const publicRoutes = [
     { path: config.routes.home, component: Home, layout: DefaultLayout },
@@ -38,7 +40,7 @@ const privateRoutes = [
         path: config.routes.admin,
         component: Admin,
         layout: null,
-        role: 'admin',
+        role: null,
         isRole: true,
     },
     {
@@ -46,7 +48,8 @@ const privateRoutes = [
         path: config.routes.ofTheChief,
         component: OfTheChief,
         layout: null,
-        role: 'OfTheChief',
+        role: null,
+        //role: 'OfTheChief',
         isRole: true,
     },
     {
@@ -85,6 +88,22 @@ const privateRoutes = [
         id: 8,
         path: config.routes.editUser,
         component: EditUsers,
+        layout: null,
+        role: null,
+        isRole: true,
+    },
+    {
+        id: 9,
+        path: config.routes.listShift,
+        component: ListShift,
+        layout: null,
+        role: null,
+        isRole: true,
+    },
+    {
+        id: 10,
+        path: config.routes.sales,
+        component: Sales,
         layout: null,
         role: null,
         isRole: true,

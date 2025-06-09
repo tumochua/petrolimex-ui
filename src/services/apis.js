@@ -86,3 +86,10 @@ export const apiEditUserById = (users) => {
 export const apiCreateReport = (reportFile) => {
     return api.post('/api-create-report', reportFile)
 }
+export const apiListShift = () => {
+    return api.get('/api-list-shift')
+}
+
+export const apiListSales = () => {
+    return api.get('/api-list-sales')
+}

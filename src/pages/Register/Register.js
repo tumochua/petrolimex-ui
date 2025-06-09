@@ -48,7 +48,7 @@ function Register() {
 
     const onSubmit = async (data) => {
         if (data) {
-            // console.log('data', data);
+            console.log('data', data);
             const resultRegister = await handRegisterUser(data)
             console.log(resultRegister);
             if (resultRegister && resultRegister?.data?.statusCode === 4) {
@@ -74,7 +74,7 @@ function Register() {
                     progress: undefined,
                     theme: "light",
                 });
-                navigate(config.routes.employee)
+                // navigate(config.routes.employee)
             }
         }
     };

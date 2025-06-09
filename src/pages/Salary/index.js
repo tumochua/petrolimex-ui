@@ -11,7 +11,7 @@ import Header from "@/layouts/Header";
 import style from './Salary.module.scss'
 import { Button } from "@mui/material";
 import { apiCountSalary, apiGetAllSalary, apiGetProfileUser } from '@/services/apis';
-
+import { SALARY_SENIORITY } from '@/environment';
 
 function Salary() {
 
@@ -20,6 +20,9 @@ function Salary() {
     const [roleId, setRoleId] = useState(null)
     const [type, setType] = useState('nv')
     const [filterSalary, setFilterSalary] = useState(null)
+    const [userData, setUserData] = useState(null)
+    const [yearsWorked, setYearsWorked] = useState(0);
+
 
     const schema = yup.object().shape({
         salaryBase: yup.string().required("Salary base is Required!"),
@@ -50,15 +53,16 @@ function Salary() {
         }
 
     }, [listSalary, roleId])
-    // console.log(filterSalary);
 
 
     useEffect(() => {
         (async () => {
             const response = await apiGetProfileUser()
             setRoleId(response?.data?.data.roleData?.roleId)
+            setUserData(response?.data?.data)
         })()
     }, [])
+
 
     useEffect(() => {
         (async () => {
@@ -68,7 +72,22 @@ function Salary() {
             }
         })()
     }, [open])
+    useEffect(() => {
+        if (userData) {
+            // setSize(calculateYearsWorked(userData.createdAt,));
+            const startDate = new Date(userData.createdAt);
+            const currentDate = new Date();
 
+            const differenceInTime = currentDate.getTime() - startDate.getTime();
+            const differenceInYears = differenceInTime / (1000 * 3600 * 24 * 365.25);
+            const yearsWorked = Math.floor(differenceInYears);
+
+            setYearsWorked(yearsWorked);
+        }
+    }, [userData])
+    // if (userData) {
+    //     console.log(userData);
+    // }
 
     const onSubmit = async (data) => {
         if (data) {
@@ -82,17 +101,40 @@ function Salary() {
         setOpen(true)
         setType(type)
     }
-    const handleSalaryAdmin = (type) => {
-        setOpen(true)
-        // reset()
-        setType(type)
-    }
+    // const handleSalaryAdmin = (type) => {
+    //     setOpen(true)
+    //     // reset()
+    //     setType(type)
+    // }
 
     const handleClose = () => {
         setOpen(false)
 
     }
+
     // console.log(listSalary);
+    const calculateYearsWorked = (startDate, currentSalary, increasePerCycle) => {
+        // console.log(startDate, currentSalary, increasePerCycle);
+        const today = new Date();
+        const start = new Date(startDate);
+        const differenceInTime = today.getTime() - start.getTime();
+        const differenceInYears = differenceInTime / (1000 * 3600 * 24 * 365.25); // Số năm
+
+        const cycles = Math.floor(differenceInYears / 5); // Số chu kỳ 5 năm đã trôi qua
+        console.log(cycles);
+        if (cycles > 0) {
+            // const newSalary = currentSalary + (cycles * increasePerCycle);
+            const newSalary = parseInt(currentSalary) + parseInt(increasePerCycle);
+            // console.log(newSalary);
+            const formattedNumber = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(newSalary);
+            // console.log(formattedNumber);
+            return formattedNumber;
+        } else {
+            const result = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(currentSalary);
+
+            return result;
+        }
+    };
     return (
         <>
             <Header />
@@ -134,18 +176,17 @@ function Salary() {
                                 />
                                 <p className={style.errorNoti}>{errors.allowance?.message}</p>
                             </div>
-                            {
-                                type === 'nv' ?
-                                    <div className={style.formGroup}>
-                                        <span>Trợ Cấp</span><br />
-                                        <input
-                                            className={style.inputSalary}
-                                            placeholder="VND" {...register("subsidize")}
-                                            type='number'
-                                        />
-                                        <p className={style.errorNoti}>{errors.subsidize?.message}</p>
-                                    </div> :
-                                    <div className={style.formGroup}>
+
+                            <div className={style.formGroup}>
+                                <span>Trợ Cấp</span><br />
+                                <input
+                                    className={style.inputSalary}
+                                    placeholder="VND" {...register("subsidize")}
+                                    type='number'
+                                />
+                                <p className={style.errorNoti}>{errors.subsidize?.message}</p>
+                            </div> :
+                            {/* <div className={style.formGroup}>
                                         <span>Trợ Cấp Trách Nhiệm</span><br />
                                         <input
                                             className={style.inputSalary}
@@ -153,14 +194,13 @@ function Salary() {
                                             type='number'
                                         />
                                         <p className={style.errorNoti}>{errors.subsidize?.message}</p>
-                                    </div>
-                            }
+                                    </div> */}
                             <div className={style.formGroup}>
                                 <span>Tháng</span><br />
                                 <input
                                     className={style.inputSalary}
                                     placeholder="ngày tháng năm" {...register("time")}
-                                    type='number'
+                                    type='date'
                                 />
                                 <p className={style.errorNoti}>{errors.time?.message}</p>
                             </div>
@@ -180,7 +220,7 @@ function Salary() {
                             (roleId && roleId === 'R2') || (roleId && roleId === 'R1') ?
                                 <div className={style.btnSalary}>
                                     <Button variant="contained" size='large' sx={{ fontSize: '14px', height: "40px" }} onClick={() => handleSalary('nv')}>Tính Lương Nhân Viên</Button>
-                                    <Button variant="contained" size='large' sx={{ fontSize: '14px', height: "40px" }} onClick={() => handleSalaryAdmin('admin')}>Tính Lương Quản Lý</Button>
+                                    {/* <Button variant="contained" size='large' sx={{ fontSize: '14px', height: "40px" }} onClick={() => handleSalaryAdmin('admin')}>Tính Lương Quản Lý</Button> */}
                                 </div> : null
                         }
                     </div>
@@ -192,10 +232,8 @@ function Salary() {
                                 <th>Lương Cơ Bản</th>
                                 <th>Phụ Cấp</th>
                                 <th>Trợ Cấp Độc Hại (nhân viên)</th>
-                                {
-                                    (roleId && roleId === 'R2') || (roleId && roleId === 'R1') ?
-                                        <th>Trợ Cấp Trách Nhiệm (Quản lý, của hàng trưởng)</th>
-                                        : null
+                                {roleId && roleId === 'R0' &&
+                                    <th>Thâm Niên</th>
                                 }
                             </tr>
                             {
@@ -204,10 +242,36 @@ function Salary() {
                                         <tr key={salary.id}>
                                             <td>{index + 1}</td>
                                             <td>{salary?.time}</td>
-                                            <td>{salary?.basic_salary}</td>
-                                            <td>{salary?.allowance}</td>
-                                            <td>{salary?.subsidize || 'Không dành cho quản lý'}</td>
-                                            <td>{roleId && roleId !== 'R0' ? salary?.responsibility || 'Không dành cho nhân viên' : null}</td>
+                                            {roleId && roleId === 'R0' ?
+                                                <td>{calculateYearsWorked(new Date(userData?.createdAt).toLocaleDateString(), salary?.basic_salary, SALARY_SENIORITY)}</td> :
+                                                <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(salary?.basic_salary)}</td>
+                                                // <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(newSalary);salary?.basic_salary}</td>
+                                            }
+                                            <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(salary?.allowance)}</td>
+                                            <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(salary?.subsidize)}</td>
+
+                                            {/* <td>{salary?.allowance}</td>
+                                            <td>{salary?.subsidize || 'Không dành cho quản lý'}</td> */}
+
+                                            {
+                                                roleId && roleId === 'R0' &&
+                                                <td>{roleId && roleId === 'R0' && yearsWorked} năm</td>
+                                            }
+
+                                            {/* {
+                                                roleId && roleId !== 'R0' &&
+                                                // <td>{roleId && roleId !== 'R0' ? salary?.responsibility || 'Không dành cho nhân viên' : null}</td>
+                                                <td>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(salary?.responsibility)}</td>
+
+                                            } */}
+                                            {/* {
+                                                roleId && roleId === 'R0' &&
+                                                <td>{calculateSalaryIncrease(new Date(userData?.createdAt).toLocaleDateString(), currentYear, salary?.basic_salary) + salary?.basic_salary + salary?.subsidize}</td>
+                                            } */}
+
+                                            {/* <td>{roleId && roleId !== 'R0' ? salary?.responsibility || 'Không dành cho nhân viên' : null}</td>
+                                            <td>{roleId && roleId !== 'R0' ? salary?.responsibility || 'Không dành cho nhân viên' : null}</td> */}
+                                            {/* <td>{calculateSalaryIncrease(new Date(userData?.createdAt).toLocaleDateString(), currentYear, salary?.basic_salary)}</td> */}
                                         </tr>
 
                                     )

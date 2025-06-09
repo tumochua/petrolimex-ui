@@ -30,14 +30,24 @@
 }
 
 .headerMenuItem {
-    color: white;
+    padding: 8px 12px;
     text-decoration: none;
+    color: white;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
 
     &:hover {
         cursor: pointer;
         opacity: 0.9;
     }
+
+    &.active {
+        font-weight: bold;
+        border-bottom: 2px solid #f57c00;
+    }
 }
+
+
 
 .headerWarpper {
     display: flex;
